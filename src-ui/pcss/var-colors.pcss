@@ -1,0 +1,104 @@
+
+/**
+ * Reference colors from google material. 000 to 999 format.
+ *
+ * https: //material.io/archive/guidelines/style/color.html#color-color-palette
+ */
+:root {
+
+  --clr-white: #fff;
+
+  /* google material 'Grey' */
+  --clr-mono-050: #FAFAFA;
+  --clr-mono-100: #F5F5F5;
+  --clr-mono-200: #EEEEEE;
+  --clr-mono-300: #E0E0E0;
+  --clr-mono-400: #BDBDBD;
+  --clr-mono-500: #9E9E9E;
+  --clr-mono-600: #757575;
+  --clr-mono-700: #616161;
+  --clr-mono-750: #565656;
+  --clr-mono-800: #424242;
+  --clr-mono-850: #303030;
+  --clr-mono-900: #212121;
+  --clr-mono-950: #171717;
+  --clr-mono-990: #0D0D0D;
+
+  /* google material 'Blue' */
+  --clr-prime-050: #E3F2FD;
+  --clr-prime-100: #BBDEFB;
+  --clr-prime-200: #90CAF9;
+  --clr-prime-300: #64B5F6;
+  --clr-prime-400: #42A5F5;
+  --clr-prime-500: #2196F3;
+  --clr-prime-600: #1E88E5;
+  --clr-prime-700: #1976D2;
+  --clr-prime-800: #1565C0;
+  --clr-prime-900: #0D47A1;
+
+  --clr-prime-A100: hsl(217, 100%, 75%);
+  --clr-prime-A200: #448AFF;
+  --clr-prime-A400: #2979FF;
+  --clr-prime-A700: #2962FF;
+
+  --clr-red: rgb(255, 32, 32);
+  --clr-green: rgb(0, 180, 0);
+}
+
+/**
+ * Application colors
+ * Based on 10..90 emphasis levels. 
+ * 50 is the default, and not suffixed.
+ */
+:root {
+
+  /* #region    Text Colors */
+  --txt-30: var(--clr-mono-500);
+  --txt-40: var(--clr-mono-400);
+  --txt-50: var(--clr-mono-300);
+  --txt-60: var(--clr-mono-200);
+  --txt-70: var(--clr-mono-100);
+  
+  --txt: var(--txt-50);
+
+  --txt-red: rgb(255, 92, 92);
+
+  --txt-title: var(--clr-mono-200);
+  --txt-prime: var(--clr-prime-400);
+  /* #endregion Text Colors */
+
+  /* #region    Ico Colors */
+  --ico-30: var(--clr-mono-900);
+  --ico-40: var(--clr-mono-750);
+  --ico: var(--clr-mono-700);
+  --ico-60: var(--clr-mono-500);
+  --ico-70: var(--clr-mono-500);
+
+  --ico-prime: var(--clr-prime-400);
+  /* #endregion Ico Colors */
+
+  /* #region    Border Colors */
+  --bdr-40: var(--clr-mono-900);
+  --bdr: var(--clr-mono-850);
+  --bdr-60: var(--clr-mono-800);
+  --bdr-70: var(--clr-mono-700);
+
+  --bdr-sel: var(--clr-prime-500);
+  /* #endregion Border Colors */
+
+  /* #region    Backbround Colors */
+  --bkg-20: var(--clr-mono-990);
+  --bkg-30: var(--clr-mono-950);
+  --bkg-40: var(--clr-mono-900);
+  --bkg: var(--clr-mono-850);
+  --bkg-60: var(--clr-mono-800);
+  --bkg-70: var(--clr-mono-700);
+
+  --bkg-hover: var(--clr-mono-700);
+
+  --bkg-sel: var(--bkg-60);
+  --bkg-pressed: var(--clr-mono-600);
+
+  --bkg-app: var(--bkg-20);
+  /* #endregion Backbround Colors */
+}

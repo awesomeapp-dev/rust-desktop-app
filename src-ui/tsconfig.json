@@ -1,0 +1,45 @@
+{
+	"compilerOptions": {
+		// For modern runtimes & rollup
+		"target": "ES2022",
+		"module": "ES2022",
+
+		// For interop
+		"moduleResolution": "node",
+		"esModuleInterop": true,		
+
+		// Full ts mode
+		"allowJs": false,
+		"checkJs": false,
+		"strict": true,
+
+		// Fev info
+		"declaration": true,
+		"sourceMap": true, 
+
+		// Use native class fields
+		"useDefineForClassFields": true,
+
+		// Allows TS Decorators
+		"experimentalDecorators": true,
+
+		// Disallow inconsistently-cased references to the same file.
+		"forceConsistentCasingInFileNames": true,
+
+		// Paths info
+		"outDir": ".out/", // for checkin tsc output only. Rollup is used for runtime
+		"baseUrl": ".",
+
+		// Speedup compile
+		"skipLibCheck": true
+	},
+
+	// We want more control about which code we will compile and exclude
+	"include": [
+		"./src/**/*.ts"
+	],
+
+	"exclude": [
+		"node_modules"
+	]
+}

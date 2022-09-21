@@ -1,0 +1,49 @@
+[build]
+beforeBuildCommand = ""
+beforeDevCommand = ""
+devPath = "http://localhost:8080/"
+distDir = "../dist"
+
+[package]
+productName = "awesome-app"
+version = "0.1.0"
+
+[tauri.allowlist]
+all = false
+
+[tauri.bundle]
+active = true
+category = "DeveloperTool"
+copyright = ""
+externalBin = [ ]
+icon = [ "icons/32x32.png" ]
+identifier = "my.awesome-app"
+longDescription = ""
+resources = [ ]
+shortDescription = ""
+targets = "all"
+
+[tauri.bundle.deb]
+depends = [ ]
+
+[tauri.bundle.macOS]
+exceptionDomain = ""
+frameworks = [ ]
+
+[tauri.bundle.windows]
+digestAlgorithm = "sha256"
+timestampUrl = ""
+
+[tauri.security]
+
+[tauri.updater]
+active = false
+
+[[tauri.windows]]
+title = "Awesome App"
+x = 3_200
+y = 500
+height = 1_200
+width = 800
+fullscreen = false
+resizable = true

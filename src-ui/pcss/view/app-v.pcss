@@ -1,0 +1,58 @@
+
+
+app-v {
+  --app-header-height: 6rem;
+
+  background: var(--bkg-app);
+  display: grid;
+  grid-template-columns: 12rem 1fr;
+  grid-template-rows: var(--app-header-height) 1fr;
+
+  &.min-nav {
+    grid-template-columns: 0rem 1fr;
+  }
+
+  & > header {
+    grid-column: 1/2;
+
+    padding: 0 .5rem;
+    background: var(--bkg-40);
+    
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .5rem;
+    align-items: center;
+    font-size: 1.25rem;
+    font-weight: 200;
+
+    & > h1 {
+      text-transform: uppercase;
+      font-size: 1.125rem;
+      font-weight: 400;
+      letter-spacing: .05em;
+      color: var(--txt-70);
+
+      span.prime { 
+        margin-left: .3em;
+        color: var(--txt-prime);
+      }
+    }
+
+  }
+
+  & > nav-v {
+    grid-column: 1;
+    grid-row: 2;
+
+    border-top: solid 1px var(--bkg-30);
+  }
+
+
+  & > main {
+    grid-row: 1/3;
+    grid-column: 2;
+    display: grid;
+  }
+
+}
+

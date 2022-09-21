@@ -1,0 +1,37 @@
+.*
+!.gitignore
+_*
+
+# node & rust build
+node_modules/
+target/
+
+# For this template, ignore package-lock.json
+package-lock.json
+
+# tauri dist build assets
+dist/js/
+dist/css/
+
+# Safety net
+__pycache__/
+npm-debug.log
+report.*.json
+*.parquet
+*.map
+*.zip
+*.gz
+*.tar
+*.tgz
+*.mov
+*.mp4
+
+
+
+# images
+*.ico
+*.jpeg
+*.jpg
+*.png
+!src-tauri/icons/*.png
+*.icns

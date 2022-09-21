@@ -1,0 +1,30 @@
+{
+  "name": "awesome-app-base",
+  "version": "0.9.0",
+  "type": "module",
+  "scripts": {
+    "tauri": "tauri",
+    "localhost": "./node_modules/.bin/servor dist index.html 8080 --reload",
+    "ui-build": "./node_modules/.bin/rollup -c & ./node_modules/.bin/pcss",
+    "ui-dev": "./node_modules/.bin/rollup -c -w & ./node_modules/.bin/pcss -w & npm run localhost",
+    "svg-symbols": "./node_modules/.bin/sketchdev"
+  },
+  "dependencies": {
+    "@dom-native/ui": "^0.3.0-alpha.1",
+    "@tauri-apps/api": "^1.1.0",
+    "dom-native": "^0.11.1",
+    "utils-min": "^0.2.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^14.1.0",
+    "@rollup/plugin-typescript": "^8.5.0",
+    "@tauri-apps/cli": "^1.1.1",
+    "pcss-cli": "^0.2.7",
+    "rollup": "^2.79.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "servor": "^4.0.2",
+    "sketchdev": "^0.7.4",
+    "tslib": "^2.4.0",
+    "typescript": "^4.8.3"
+  }
+}
