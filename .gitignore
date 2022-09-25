@@ -17,6 +17,11 @@ dist/css/
 # However, in full application code, this could be committed, especially if it was manually changed
 Awesome.toml
 
+# For the image for now
+*.png
+!dist/images/*.png
+!src-tauri/icons/app-icon.png
+
 # Safety net
 __pycache__/
 npm-debug.log
@@ -32,8 +37,7 @@ report.*.json
 
 # images
 *.ico
+*.icns
 *.jpeg
 *.jpg
-*.png
-!src-tauri/icons/*.png
 *.icns
