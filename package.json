@@ -1,15 +1,15 @@
 {
   "name": "awesome-app-base",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "type": "module",
   "scripts": {
     "tauri": "tauri",
-    "localhost": "./node_modules/.bin/servor dist index.html 8080 --reload",
-    "pcss": "./node_modules/.bin/pcss",
-    "rollup": "./node_modules/.bin/rollup -c",
-    "ui-build": "./node_modules/.bin/rollup -c & ./node_modules/.bin/pcss",
-    "ui-dev": "./node_modules/.bin/rollup -c -w & ./node_modules/.bin/pcss -w & npm run localhost",
-    "svg-symbols": "./node_modules/.bin/sketchdev"
+    "localhost": "servor dist index.html 8080 --reload",
+    "pcss": "pcss",
+    "rollup": "rollup -c",
+    "ui-build": "rollup -c & pcss",
+    "ui-dev": "rollup -c -w & pcss -w & npm run localhost",
+    "svg-symbols": "sketchdev"
   },
   "dependencies": {
     "@dom-native/ui": "^0.3.0-alpha.1",
