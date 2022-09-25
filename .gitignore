@@ -17,7 +17,8 @@ dist/css/
 # However, in full application code, this could be committed, especially if it was manually changed
 Awesome.toml
 
-# For the image for now
+# No png except in dist or the app-icon.
+# For generating the app icons, npm run tauri icon src-tauri/icons/app-icon.png)
 *.png
 !dist/images/*.png
 !src-tauri/icons/app-icon.png

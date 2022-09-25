@@ -5,6 +5,8 @@
   "scripts": {
     "tauri": "tauri",
     "localhost": "./node_modules/.bin/servor dist index.html 8080 --reload",
+    "pcss": "./node_modules/.bin/pcss",
+    "rollup": "./node_modules/.bin/rollup -c",
     "ui-build": "./node_modules/.bin/rollup -c & ./node_modules/.bin/pcss",
     "ui-dev": "./node_modules/.bin/rollup -c -w & ./node_modules/.bin/pcss -w & npm run localhost",
     "svg-symbols": "./node_modules/.bin/sketchdev"
