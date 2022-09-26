@@ -47,9 +47,9 @@ active = false
 
 [[tauri.windows]]
 title = "Awesome App"
+fullscreen = false
+resizable = true
 x = 3_200
 y = 500
 height = 1_200
 width = 800
-fullscreen = false
-resizable = true
