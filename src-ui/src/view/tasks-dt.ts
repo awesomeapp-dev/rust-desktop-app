@@ -11,8 +11,8 @@ const TASK_HEADER = html`
 `
 
 const TASK_ROW_HTML = html`
-<span></span>
-<span></span>
+<span class="title"></span>
+<span class="info"></span>
 <d-check class="done"></d-check>
 <d-ico class="show-more" name="ico-more"></d-ico>
 `;

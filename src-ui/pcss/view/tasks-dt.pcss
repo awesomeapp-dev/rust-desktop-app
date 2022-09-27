@@ -6,7 +6,6 @@ tasks-dt {
   --content-bkg: var(--bkg-app);
   background: var(--content-bkg);
 
-
   overflow: auto;
   display: grid;
   grid-template-columns: 2fr 1fr 5rem 2rem;
@@ -69,6 +68,14 @@ tasks-dt {
       }
     }
 
+    & > .info {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      display: block;
+      align-self: center;
+      height: auto;
+    }
 
     & > d-ico,
     & > d-check {
