@@ -1,3 +1,12 @@
+//! Ctx is the context object passed through any IPC calls.
+//! It can be queried to get the necessary states/services to perform any steps of a request.
+//!
+//! Notes:
+//! 	- Simple implementation for now.
+//!   - For cloud applications, this will be used for authorization.
+//!   - Eventually, this will also be used for "full context" logging/tracing or even performance tracing.
+//!   - For a single user, desktop application, this object is much simpler as authorization and logging requirements are much reduced.
+
 use crate::event::HubEvent;
 use crate::prelude::*;
 use crate::store::Store;

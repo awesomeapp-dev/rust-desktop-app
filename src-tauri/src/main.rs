@@ -55,6 +55,7 @@ async fn main() -> Result<()> {
 	Ok(())
 }
 
+/// Only use while developing. Convenient when to seed the store on start of the application.
 async fn seed_store(store: Arc<Store>) -> Result<()> {
 	let ps = ["A", "B"]
 		.into_iter()

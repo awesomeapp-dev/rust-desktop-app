@@ -1,3 +1,10 @@
+//! Main Application View which will initialize the application and display the appropriate 
+//! Notes:
+//!   - Will listen to Route.change event, and update the main view
+//!   - The Nav View `nav-v` will manage it's routing update.
+//!
+//! TODO: Needs to implement the menu click (min-nav action)
+
 import { BaseHTMLElement, customElement, elem, first, getFirst, html, onEvent, onHub } from 'dom-native';
 import { projectFmc } from '../model';
 import { router } from '../router';

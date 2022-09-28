@@ -4,7 +4,7 @@ use std::collections::BTreeMap;
 use surrealdb::sql::{thing, Array, Datetime, Object, Value};
 use surrealdb::{Datastore, Session};
 
-mod utils;
+mod x_impls;
 
 // --- Marker traits for types that can be used for query.
 pub trait Creatable: Into<Value> {}
@@ -36,11 +36,8 @@ impl Store {
 		let ress = self.ds.execute(&sql, &self.ses, Some(vars), false).await?;
 
 		let res = ress.into_iter().next().expect("Did not get a response");
-		let val = res.result?.first();
-		match val {
-			Value::Object(val) => Ok(val),
-			_ => panic!("Error not object found for tid {tid}"),
-		}
+
+		res.result?.first().x_as()
 	}
 
 	pub async fn exec_create<T: Creatable>(&self, tb: &str, data: T) -> Result<String> {
@@ -58,10 +55,10 @@ impl Store {
 		let val = ress.into_iter().next().map(|r| r.result).expect("id not returned")?;
 
 		if let Value::Object(mut val) = val.first() {
-			let val = val.remove("id").expect("id not found").as_string();
-			Ok(format!("{val}"))
+			val.x_take_val::<String>("id")
+				.map_err(|ex| Error::StoreFailToCreate(f!("exec_create {tb} {ex}")))
 		} else {
-			panic!("Object not created for {tb}")
+			Err(Error::StoreFailToCreate(f!("exec_create {tb}, nothing returned.")))
 		}
 	}
 
@@ -79,9 +76,9 @@ impl Store {
 		let result = res.result?;
 
 		if let Value::Object(mut val) = result.first() {
-			Ok(val.x_take_val("id")?)
+			val.x_take_val("id")
 		} else {
-			panic!("exec_merge panic - no value returned??? for tid: {tid}")
+			Err(Error::StoreFailToCreate(f!("exec_merge {tid}, nothing returned.")))
 		}
 	}
 

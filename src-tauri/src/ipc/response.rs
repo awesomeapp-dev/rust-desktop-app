@@ -1,3 +1,11 @@
+//! Here we are following a "JSON-RPC 2.0" type of response with error or result.
+//!
+//! Notes:
+//! 	- For now, we do not handle the "request.id" of "JSON-RPC 2.0", and request batching
+//!     but this could be added later.
+//! 	- The benefit of following the "JSON-RPC 2.0" scheme is that the frontend could be adapted to talk to a
+//!     web server with minimum effort, and the JSON-RPC data format for request/response is simple, clean, and well thought out.
+
 use crate::prelude::*;
 use serde::Serialize;
 

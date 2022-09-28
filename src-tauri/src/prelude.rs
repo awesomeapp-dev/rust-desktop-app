@@ -1,3 +1,11 @@
+//! Key default crate types for this application.
+//!
+//! Notes:
+//! 	- The best practice is to have a narrow crate prelude to normalize the key types throughout the application code.
+//! 	- We keep this as small as possible, and try to limit generic name beside Result and Error (which is re-exported from this module)
+//! 	- The `f!` macro alias of `format!`  and `s!` "to string" macro are just personal preferences, and relatively uncommon, remove as you see fit.
+//!
+
 pub use crate::error::Error;
 
 pub type Result<T> = core::result::Result<T, Error>;
@@ -12,8 +20,7 @@ macro_rules! map {
   }
 pub(crate) use map; // export macro for crate
 
-// Don't blame the messenger.
-// It's my brain, it's not me.
+// Personal preference.
 macro_rules! s {
 	() => {
 		String::new()
@@ -24,5 +31,5 @@ macro_rules! s {
 }
 pub(crate) use s; // export macro for crate
 
-// Again, not me.
+// Performance preference.
 pub use std::format as f;

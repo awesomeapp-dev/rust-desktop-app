@@ -1,3 +1,7 @@
+//! Tauri IPCs for Task Model Controller (Frontend Controller to Backend Controller)
+//!
+//! TODO: Needs remove .unwrap() while still having control over the exception format.
+
 use super::{CreateParams, DeleteParams, GetParams, IpcResponse, ListParams, UpdateParams};
 use crate::model::{
 	ModelMutateResultData, Task, TaskBmc, TaskFilter, TaskForCreate, TaskForUpdate,

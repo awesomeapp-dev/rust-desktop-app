@@ -1,3 +1,5 @@
+//! Implementations of the crate::utils::x_utils traits for the store (i.e., surrealdb) value type.
+
 use crate::prelude::*;
 use crate::utils::XTakeInto;
 use crate::utils::{XAs, XInto};
@@ -8,7 +10,7 @@ impl XInto<Object> for Value {
 	fn x_into(self) -> Result<Object> {
 		match self {
 			Value::Object(obj) => Ok(obj),
-			_ => panic!("Value is not object"),
+			_ => Err(Error::XValueNotOfType("Object")),
 		}
 	}
 }
@@ -17,7 +19,7 @@ impl XInto<Array> for Value {
 	fn x_into(self) -> Result<Array> {
 		match self {
 			Value::Array(obj) => Ok(obj),
-			_ => panic!("Value is not array"),
+			_ => Err(Error::XValueNotOfType("Array")),
 		}
 	}
 }
@@ -26,7 +28,7 @@ impl XInto<i64> for Value {
 	fn x_into(self) -> Result<i64> {
 		match self {
 			Value::Number(obj) => Ok(obj.as_int()),
-			_ => panic!("Value is not array"),
+			_ => Err(Error::XValueNotOfType("i64")),
 		}
 	}
 }
@@ -36,7 +38,7 @@ impl XInto<bool> for Value {
 		match self {
 			Value::False => Ok(false),
 			Value::True => Ok(true),
-			_ => panic!("Value is not boolean {self:?}"),
+			_ => Err(Error::XValueNotOfType("bool")),
 		}
 	}
 }
@@ -46,7 +48,7 @@ impl XInto<String> for Value {
 		match self {
 			Value::Strand(strand) => Ok(strand.as_string()),
 			Value::Thing(thing) => Ok(thing.to_string()),
-			other => panic!("Value is not string {other:?}"),
+			_ => Err(Error::XValueNotOfType("String")),
 		}
 	}
 }

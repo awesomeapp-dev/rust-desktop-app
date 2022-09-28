@@ -1,3 +1,7 @@
+//! Tauri IPCs for Project Model Controller (Frontend Controller to Backend Controller)
+//!
+//! TODO: Needs remove .unwrap() while still having control over the exception format.
+
 use crate::model::{
 	ModelMutateResultData, Project, ProjectBmc, ProjectFilter, ProjectForCreate,
 	ProjectForUpdate,
