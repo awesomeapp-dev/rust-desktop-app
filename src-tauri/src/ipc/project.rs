@@ -1,6 +1,5 @@
-//! Tauri IPCs for Project Model Controller (Frontend Controller to Backend Controller)
+//! Tauri IPC commands to bridge Project Frontend Model Controller to Backend Model Controller
 //!
-//! TODO: Needs remove .unwrap() while still having control over the exception format.
 
 use super::{CreateParams, DeleteParams, GetParams, IpcResponse, ListParams, UpdateParams};
 use crate::ctx::Ctx;
@@ -8,11 +7,15 @@ use crate::model::{
 	ModelMutateResultData, Project, ProjectBmc, ProjectFilter, ProjectForCreate,
 	ProjectForUpdate,
 };
+use crate::prelude::*;
 use tauri::{command, AppHandle, Wry};
 
 #[command]
 pub async fn get_project(app: AppHandle<Wry>, params: GetParams) -> IpcResponse<Project> {
-	ProjectBmc::get(Ctx::from_app(app).unwrap(), &params.id).await.into()
+	match Ctx::from_app(app) {
+		Ok(ctx) => ProjectBmc::get(ctx, &params.id).await.into(),
+		Err(_) => Err(Error::CtxFail).into(),
+	}
 }
 
 #[command]
@@ -20,7 +23,10 @@ pub async fn create_project(
 	app: AppHandle<Wry>,
 	params: CreateParams<ProjectForCreate>,
 ) -> IpcResponse<ModelMutateResultData> {
-	ProjectBmc::create(Ctx::from_app(app).unwrap(), params.data).await.into()
+	match Ctx::from_app(app) {
+		Ok(ctx) => ProjectBmc::create(ctx, params.data).await.into(),
+		Err(_) => Err(Error::CtxFail).into(),
+	}
 }
 
 #[command]
@@ -28,9 +34,10 @@ pub async fn update_project(
 	app: AppHandle<Wry>,
 	params: UpdateParams<ProjectForUpdate>,
 ) -> IpcResponse<ModelMutateResultData> {
-	ProjectBmc::update(Ctx::from_app(app).unwrap(), &params.id, params.data)
-		.await
-		.into()
+	match Ctx::from_app(app) {
+		Ok(ctx) => ProjectBmc::update(ctx, &params.id, params.data).await.into(),
+		Err(_) => Err(Error::CtxFail).into(),
+	}
 }
 
 #[command]
@@ -38,7 +45,10 @@ pub async fn delete_project(
 	app: AppHandle<Wry>,
 	params: DeleteParams,
 ) -> IpcResponse<ModelMutateResultData> {
-	ProjectBmc::delete(Ctx::from_app(app).unwrap(), &params.id).await.into()
+	match Ctx::from_app(app) {
+		Ok(ctx) => ProjectBmc::delete(ctx, &params.id).await.into(),
+		Err(_) => Err(Error::CtxFail).into(),
+	}
 }
 
 #[command]
@@ -46,5 +56,8 @@ pub async fn list_projects(
 	app: AppHandle<Wry>,
 	params: ListParams<ProjectFilter>,
 ) -> IpcResponse<Vec<Project>> {
-	ProjectBmc::list(Ctx::from_app(app).unwrap(), params.filter).await.into()
+	match Ctx::from_app(app) {
+		Ok(ctx) => ProjectBmc::list(ctx, params.filter).await.into(),
+		Err(_) => Err(Error::CtxFail).into(),
+	}
 }

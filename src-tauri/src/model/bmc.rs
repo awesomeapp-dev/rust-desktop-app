@@ -1,3 +1,6 @@
+//! Base and low level Backend Model Controller functions
+//!
+
 use super::{fire_model_event, ModelMutateResultData};
 use crate::ctx::Ctx;
 use crate::prelude::*;

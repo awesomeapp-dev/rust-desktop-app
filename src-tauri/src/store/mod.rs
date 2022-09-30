@@ -1,3 +1,7 @@
+//! Small store layer to talk to the surrealdb.
+//! This module is to narrow and normalize the lower level API surface
+//! to the rest of the application code (.e.g, Backend Model Controllers)
+
 use crate::prelude::*;
 use crate::utils::XTakeVal;
 use std::collections::BTreeMap;

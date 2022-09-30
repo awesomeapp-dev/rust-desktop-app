@@ -1,4 +1,4 @@
-//! Key default crate types for this application.
+//! Key default types for this application designed to be imported in most crate modules.
 //!
 //! Notes:
 //! 	- The best practice is to have a narrow crate prelude to normalize the key types throughout the application code.

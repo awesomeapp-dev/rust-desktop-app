@@ -1,11 +1,6 @@
-//! Params used in the IPC methods.
+//! Params types used in the IPC methods.
 //!
-//! The current best practice is to follow a single argument type, called "params" for all types.
-//!
-//! This approach has the following benefits:
-//!
-//! 	- Simplify the IPC method signature, as we just need to know method name and the "param" type.
-//! 	- Inline with `JSON-RPC 2.0` spec which eventually could be implemented on a server with the same frontend.
+//! The current best practice is to follow a single argument type, called "params" for all method (JSON-RPC's style).
 //!
 
 use serde::{Deserialize, Serialize};

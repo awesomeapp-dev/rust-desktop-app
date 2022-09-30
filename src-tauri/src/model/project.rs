@@ -1,3 +1,6 @@
+//! All model and controller for the Project type
+//!
+
 use super::bmc::{bmc_create, bmc_delete, bmc_get, bmc_list, bmc_update};
 use super::ModelMutateResultData;
 use crate::ctx::Ctx;

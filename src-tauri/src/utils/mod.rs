@@ -1,4 +1,5 @@
 //! Application wide utilities. Most will be re-exported.
+//!
 
 mod x_take;
 

@@ -1,4 +1,4 @@
-//! Here we are following a "JSON-RPC 2.0" type of response with error or result.
+//! Here we are following a "JSON-RPC 2.0" styleesponse with error or result.
 //!
 //! Notes:
 //! 	- For now, we do not handle the "request.id" of "JSON-RPC 2.0", and request batching

@@ -5,9 +5,13 @@
 //! 	- The strategy is to start with one Error type for the whole application and then seggregate as needed.
 //!   - Since everything is typed from the start, renaming and refactoring become relatively trivial.
 //! 	- By best practices, `anyhow` is not used in application code, but can be used in unit or integration test (will be in dev_dependencies when used)
+//!
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
+	#[error("Fail to get Ctx")]
+	CtxFail,
+
 	#[error("Value not of type '{0}'")]
 	XValueNotOfType(&'static str),
 
