@@ -1,10 +1,11 @@
 use crate::prelude::*;
-use crate::utils::{XAs, XInto, XTakeVal};
+use crate::utils::XTakeVal;
 use std::collections::BTreeMap;
 use surrealdb::sql::{thing, Array, Datetime, Object, Value};
 use surrealdb::{Datastore, Session};
 
-mod x_impls;
+mod try_froms;
+mod x_takes;
 
 // --- Marker traits for types that can be used for query.
 pub trait Creatable: Into<Value> {}
@@ -37,13 +38,14 @@ impl Store {
 
 		let res = ress.into_iter().next().expect("Did not get a response");
 
-		res.result?.first().x_as()
+		W(res.result?.first()).try_into()
 	}
 
 	pub async fn exec_create<T: Creatable>(&self, tb: &str, data: T) -> Result<String> {
 		let sql = s!("CREATE type::table($tb) CONTENT $data RETURN id");
 
-		let mut data: Object = data.into().x_as()?;
+		// let mut data: Object = data.into().x_into()?;
+		let mut data: Object = W(data.into()).try_into()?;
 		let now = Datetime::default().timestamp_nanos();
 		data.insert("ctime".into(), now.into());
 
@@ -105,7 +107,7 @@ impl Store {
 
 		// --- Apply the filter
 		if let Some(filter) = filter {
-			let obj: Object = filter.x_as()?;
+			let obj: Object = W(filter).try_into()?;
 			sql.push_str(" WHERE");
 			for (idx, (k, v)) in obj.into_iter().enumerate() {
 				let var = f!("w{idx}");
@@ -122,12 +124,12 @@ impl Store {
 		let res = ress.into_iter().next().expect("Did not get a response");
 
 		// Get the result value as value array (fail if it is not)
-		let array: Array = res.result?.x_as()?;
+		let array: Array = W(res.result?).try_into()?;
 
 		// build the list of object
 		let mut objs: Vec<Object> = Vec::new();
 		for item in array.into_iter() {
-			objs.push(item.x_into()?);
+			objs.push(W(item).try_into()?);
 		}
 
 		Ok(objs)

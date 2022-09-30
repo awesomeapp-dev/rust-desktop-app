@@ -3,7 +3,7 @@ use super::ModelMutateResultData;
 use crate::ctx::Ctx;
 use crate::prelude::*;
 use crate::store::{Creatable, Filterable, Patchable};
-use crate::utils::{XInto, XTakeVal};
+use crate::utils::XTakeVal;
 use serde::{Deserialize, Serialize};
 use serde_with_macros::skip_serializing_none;
 use std::collections::BTreeMap;
@@ -20,12 +20,13 @@ pub struct Project {
 	pub ctime: String,
 }
 
-impl XInto<Project> for Object {
-	fn x_into(mut self) -> Result<Project> {
+impl TryFrom<Object> for Project {
+	type Error = Error;
+	fn try_from(mut val: Object) -> Result<Project> {
 		let project = Project {
-			id: self.x_take_val("id")?,
-			name: self.x_take_val("name")?,
-			ctime: self.x_take_val::<i64>("ctime")?.to_string(),
+			id: val.x_take_val("id")?,
+			name: val.x_take_val("name")?,
+			ctime: val.x_take_val::<i64>("ctime")?.to_string(),
 		};
 
 		Ok(project)

@@ -3,7 +3,7 @@ use super::ModelMutateResultData;
 use crate::ctx::Ctx;
 use crate::prelude::*;
 use crate::store::{Creatable, Filterable, Patchable};
-use crate::utils::{XInto, XTake, XTakeVal};
+use crate::utils::{XTake, XTakeVal};
 use serde::{Deserialize, Serialize};
 use serde_with_macros::skip_serializing_none;
 use std::collections::BTreeMap;
@@ -25,15 +25,16 @@ pub struct Task {
 	pub desc: Option<String>,
 }
 
-impl XInto<Task> for Object {
-	fn x_into(mut self) -> Result<Task> {
+impl TryFrom<Object> for Task {
+	type Error = Error;
+	fn try_from(mut val: Object) -> Result<Task> {
 		let task = Task {
-			id: self.x_take_val("id")?,
-			ctime: self.x_take_val::<i64>("ctime")?.to_string(),
-			project_id: self.x_take_val("project_id")?,
-			done: self.x_take_val("done")?,
-			title: self.x_take_val("title")?,
-			desc: self.x_take("desc")?,
+			id: val.x_take_val("id")?,
+			ctime: val.x_take_val::<i64>("ctime")?.to_string(),
+			project_id: val.x_take_val("project_id")?,
+			done: val.x_take_val("done")?,
+			title: val.x_take_val("title")?,
+			desc: val.x_take("desc")?,
 		};
 
 		Ok(task)

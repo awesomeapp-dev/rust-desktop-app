@@ -10,7 +10,6 @@
 use crate::event::HubEvent;
 use crate::prelude::*;
 use crate::store::Store;
-use crate::utils::XInto;
 use serde::Serialize;
 use std::sync::Arc;
 use tauri::{AppHandle, Manager, Wry};
@@ -20,9 +19,9 @@ pub struct Ctx {
 	app_handle: AppHandle<Wry>,
 }
 
-impl XInto<Arc<Ctx>> for AppHandle<Wry> {
-	fn x_into(self) -> Result<Arc<Ctx>> {
-		Ok(Arc::new(Ctx::new(self)))
+impl Ctx {
+	pub fn from_app(app: AppHandle<Wry>) -> Result<Arc<Ctx>> {
+		Ok(Arc::new(Ctx::new(app)))
 	}
 }
 
