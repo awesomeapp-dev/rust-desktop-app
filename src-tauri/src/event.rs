@@ -1,3 +1,8 @@
+//! Event layer of the backend.
+//!
+//! Right now, very simple, just a HubEvent data type.
+//!
+
 use serde::Serialize;
 use ts_rs::TS;
 

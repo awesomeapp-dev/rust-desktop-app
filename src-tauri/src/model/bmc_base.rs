@@ -12,7 +12,6 @@ pub async fn bmc_get<E>(ctx: Arc<Ctx>, _entity: &'static str, id: &str) -> Resul
 where
 	E: TryFrom<Object, Error = Error>,
 {
-	// TODO: Need to check entity & id
 	ctx.get_store().exec_get(&id).await?.try_into()
 }
 
@@ -41,7 +40,6 @@ pub async fn bmc_update<D>(
 where
 	D: Patchable,
 {
-	// TODO: Check that id has matching entity
 	let id = ctx.get_store().exec_merge(&id, data).await?;
 
 	let result_data = ModelMutateResultData::from(id);
@@ -72,7 +70,6 @@ where
 	E: TryFrom<Object, Error = Error>,
 	F: Filterable + std::fmt::Debug,
 {
-	// FIXME: Needs to pass filter
 	// query for the Surreal Objects
 	let objects = ctx.get_store().exec_select(entity, filter.map(|f| f.into())).await?;
 

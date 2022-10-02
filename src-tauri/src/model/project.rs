@@ -1,12 +1,12 @@
 //! All model and controller for the Project type
 //!
 
-use super::bmc::{bmc_create, bmc_delete, bmc_get, bmc_list, bmc_update};
+use super::bmc_base::{bmc_create, bmc_delete, bmc_get, bmc_list, bmc_update};
 use super::ModelMutateResultData;
 use crate::ctx::Ctx;
 use crate::prelude::*;
 use crate::store::{Creatable, Filterable, Patchable};
-use crate::utils::XTakeVal;
+use crate::utils::{map, XTakeVal};
 use serde::{Deserialize, Serialize};
 use serde_with_macros::skip_serializing_none;
 use std::collections::BTreeMap;
@@ -15,7 +15,8 @@ use surrealdb::sql::{Object, Value};
 use ts_rs::TS;
 
 // region:    --- Project
-#[derive(Serialize, TS, PartialEq, Debug, Clone)]
+
+#[derive(Serialize, TS, Debug)]
 #[ts(export, export_to = "../src-ui/src/bindings/")]
 pub struct Project {
 	pub id: String,
@@ -35,10 +36,13 @@ impl TryFrom<Object> for Project {
 		Ok(project)
 	}
 }
+
 // endregion: --- Project
 
 // region:    --- ProjectForCreate
-#[derive(Deserialize, Serialize, TS, PartialEq, Debug, Clone)]
+
+#[skip_serializing_none]
+#[derive(Deserialize, TS, Debug)]
 #[ts(export, export_to = "../src-ui/src/bindings/")]
 pub struct ProjectForCreate {
 	pub name: String,
@@ -55,11 +59,13 @@ impl From<ProjectForCreate> for Value {
 }
 
 impl Creatable for ProjectForCreate {}
+
 // endregion: --- ProjectForCreate
 
 // region:    --- ProjectForUpdate
+
 #[skip_serializing_none]
-#[derive(Deserialize, Serialize, TS, PartialEq, Debug, Clone)]
+#[derive(Deserialize, TS, Debug)]
 #[ts(export, export_to = "../src-ui/src/bindings/")]
 pub struct ProjectForUpdate {
 	pub name: Option<String>,
@@ -76,10 +82,12 @@ impl From<ProjectForUpdate> for Value {
 }
 
 impl Patchable for ProjectForUpdate {}
+
 // endregion: --- ProjectForUpdate
 
 // region:    --- ProjectFilter
-#[derive(Deserialize, Serialize, Clone, Debug)]
+
+#[derive(Deserialize, Debug)]
 pub struct ProjectFilter {
 	name: Option<String>,
 }
@@ -96,16 +104,18 @@ impl From<ProjectFilter> for Value {
 }
 
 impl Filterable for ProjectFilter {}
+
 // endregion: --- ProjectFilter
 
 // region:    --- ProjectBmc
+
 pub struct ProjectBmc;
 
 impl ProjectBmc {
 	const ENTITY: &'static str = "project";
 
 	pub async fn get(ctx: Arc<Ctx>, id: &str) -> Result<Project> {
-		bmc_get::<Project>(ctx, Self::ENTITY, &id).await
+		bmc_get(ctx, Self::ENTITY, &id).await
 	}
 
 	pub async fn create(
@@ -127,10 +137,7 @@ impl ProjectBmc {
 		bmc_delete(ctx, Self::ENTITY, id).await
 	}
 
-	pub async fn list<F>(ctx: Arc<Ctx>, filter: Option<F>) -> Result<Vec<Project>>
-	where
-		F: Filterable + std::fmt::Debug,
-	{
+	pub async fn list(ctx: Arc<Ctx>, filter: Option<ProjectFilter>) -> Result<Vec<Project>> {
 		bmc_list(ctx, Self::ENTITY, filter).await
 	}
 }

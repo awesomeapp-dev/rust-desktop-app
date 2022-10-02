@@ -1,12 +1,12 @@
 //! All model and controller for the Item type
 //!
 
-use super::bmc::{bmc_create, bmc_delete, bmc_get, bmc_list, bmc_update};
+use super::bmc_base::{bmc_create, bmc_delete, bmc_get, bmc_list, bmc_update};
 use super::ModelMutateResultData;
 use crate::ctx::Ctx;
 use crate::prelude::*;
 use crate::store::{Creatable, Filterable, Patchable};
-use crate::utils::{XTake, XTakeVal};
+use crate::utils::{map, XTake, XTakeVal};
 use serde::{Deserialize, Serialize};
 use serde_with_macros::skip_serializing_none;
 use std::collections::BTreeMap;
@@ -15,8 +15,9 @@ use surrealdb::sql::{Object, Value};
 use ts_rs::TS;
 
 // region:    --- Task
+
 #[skip_serializing_none]
-#[derive(Serialize, TS, PartialEq, Debug, Clone)]
+#[derive(Serialize, TS, Debug)]
 #[ts(export, export_to = "../src-ui/src/bindings/")]
 pub struct Task {
 	pub id: String,
@@ -43,11 +44,13 @@ impl TryFrom<Object> for Task {
 		Ok(task)
 	}
 }
+
 // endregion: --- Task
 
 // region:    --- TaskForCreate
+
 #[skip_serializing_none]
-#[derive(Deserialize, Serialize, TS, PartialEq, Debug, Clone)]
+#[derive(Deserialize, TS, Debug)]
 #[ts(export, export_to = "../src-ui/src/bindings/")]
 pub struct TaskForCreate {
 	pub project_id: String,
@@ -74,11 +77,13 @@ impl From<TaskForCreate> for Value {
 }
 
 impl Creatable for TaskForCreate {}
+
 // endregion: --- TaskForCreate
 
 // region:    --- TaskForUpdate
+
 #[skip_serializing_none]
-#[derive(Deserialize, Serialize, TS, PartialEq, Debug, Clone)]
+#[derive(Deserialize, TS, Debug)]
 #[ts(export, export_to = "../src-ui/src/bindings/")]
 pub struct TaskForUpdate {
 	pub title: Option<String>,
@@ -103,10 +108,12 @@ impl From<TaskForUpdate> for Value {
 }
 
 impl Patchable for TaskForUpdate {}
+
 // endregion: --- TaskForUpdate
 
 // region:    --- TaskFilter
-#[derive(Deserialize, Serialize, Clone, Debug)]
+
+#[derive(Deserialize, Debug)]
 pub struct TaskFilter {
 	project_id: Option<String>,
 }
@@ -123,9 +130,11 @@ impl From<TaskFilter> for Value {
 }
 
 impl Filterable for TaskFilter {}
+
 // endregion: --- TaskFilter
 
 // region:    --- TaskBmc
+
 pub struct TaskBmc;
 
 impl TaskBmc {
@@ -151,11 +160,9 @@ impl TaskBmc {
 		bmc_delete(ctx, Self::ENTITY, id).await
 	}
 
-	pub async fn list<F>(ctx: Arc<Ctx>, filter: Option<F>) -> Result<Vec<Task>>
-	where
-		F: Filterable + std::fmt::Debug,
-	{
+	pub async fn list(ctx: Arc<Ctx>, filter: Option<TaskFilter>) -> Result<Vec<Task>> {
 		bmc_list(ctx, Self::ENTITY, filter).await
 	}
 }
+
 // endregion: --- TaskBmc

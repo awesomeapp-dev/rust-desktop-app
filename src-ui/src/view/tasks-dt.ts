@@ -1,7 +1,8 @@
 import { DCheckElement } from '@dom-native/ui';
 import { all, BaseHTMLElement, customElement, elem, first, frag, html, on, OnEvent, onEvent, onHub, position, scanChild, trigger } from 'dom-native';
-import { ModelMutateResultData, Task } from '../bindings';
-import { taskFmc } from '../model';
+import { ModelMutateResultData, Task } from '../bindings/index.js';
+import { taskFmc } from '../model/index.js';
+import { classable } from '../utils.js';
 
 const TASK_HEADER = html`
   <div class="th">Title </div>
@@ -11,10 +12,10 @@ const TASK_HEADER = html`
 `
 
 const TASK_ROW_HTML = html`
-<span class="title"></span>
-<span class="info"></span>
-<d-check class="done"></d-check>
-<d-ico class="show-more" name="ico-more"></d-ico>
+  <span class="title"></span>
+  <span class="info"></span>
+  <d-check class="done"></d-check>
+  <d-ico class="show-more" name="ico-more"></d-ico>
 `;
 
 @customElement('tasks-dt')
@@ -70,7 +71,6 @@ export class TasksDataTable extends BaseHTMLElement { // extends HTMLElement
     const MENU_CLASS = 'task-row-more-menu';
 
     // if already showing (will auto remove, but we do not want to popup it again)
-    // TODO: Need to finetune, would be nice to click on another popup
     if (first(`body > menu-c.${MENU_CLASS}`)) return;
 
     const showMoreEl = evt.selectTarget;
@@ -160,13 +160,12 @@ export class TaskRow extends BaseHTMLElement { // extends HTMLElement
 
     super.init();
     let content = document.importNode(TASK_ROW_HTML, true);
-    // let content = TASK_ROW_HTML.cloneNode(true) as DocumentFragment;
-
+    // Note: dom-native scanChild is a strict one fast pass child scanner. 
+    //       Use all/first if needs to be more flexible. 
     [this.#titleEl, this.#infoEl, this.#checkEl] = scanChild(content, 'span', 'span', 'd-check');
 
+    // FIXME: Check that order does not matter here.
     this.replaceChildren(content);
-    // FIXME: Needs to find a way to not have to worry about this ordering level of detail.
-    // we update the children before adding to the doc to not trigger unwanted events
     this.update(this.#task);
   }
 
@@ -197,6 +196,3 @@ declare global {
 }
 // #endregion --- task-row
 
-function classable(str: string): string {
-  return str.replace(":", "_");
-}

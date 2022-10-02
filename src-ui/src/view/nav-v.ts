@@ -1,5 +1,5 @@
 import { DInputElement } from '@dom-native/ui';
-import { all, BaseHTMLElement, customElement, elem, first, html, on, OnEvent, onEvent, onHub, scanChild } from "dom-native";
+import { all, BaseHTMLElement, customElement, elem, first, frag, html, on, OnEvent, onEvent, onHub, scanChild } from "dom-native";
 import { Project } from '../bindings/Project.js';
 import { projectFmc } from '../model/index.js';
 import { router } from '../router.js';
@@ -21,7 +21,7 @@ export class NavView extends BaseHTMLElement { // extends HTMLElement
   // #region    --- App Events
   @onHub("Model", "project", "create")
   async onProjectCreate(data: any) {
-    this.refrechContent();
+    this.refreshContent();
     router.update_state({
       project_id: data.id
     });
@@ -74,18 +74,22 @@ export class NavView extends BaseHTMLElement { // extends HTMLElement
 
     this.replaceChildren(content);
 
-    this.refrechContent(true);
+    this.refreshContent(true);
   }
 
-  async refrechContent(first_refresh?: boolean) {
+  async refreshContent(first_refresh?: boolean) {
 
     const projects = await projectFmc.list();
 
-    const prj_html = (prj: Project) => `<a data-id="${prj.id}">${prj.name}</a>`;
-    this.#contentEl.replaceChildren(html(projects.map(prj_html).join('\n')));
+    // Create the content DocumentFragment from the projects and replace children
+    const content = frag(projects, (prj: Project) =>
+      elem('a', { "data-id": prj.id, $: { textContent: prj.name } }));
+    this.#contentEl.replaceChildren(content);
 
+    // Update selction
     this.updateContentSel();
 
+    // If first refresh, select first project (update router)
     if (first_refresh && projects.length > 0) {
       router.update_state({ project_id: projects[0].id })
     }

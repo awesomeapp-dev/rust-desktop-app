@@ -1,4 +1,3 @@
-// #![allow(unused)]
 #![cfg_attr(
 	all(not(debug_assertions), target_os = "windows"),
 	windows_subsystem = "windows"
@@ -21,12 +20,8 @@ mod prelude;
 mod store;
 mod utils;
 
-// --- re-exports
-// pub use error::Error;
-
 #[tokio::main]
 async fn main() -> Result<()> {
-	// let store: Arc<StoreManager> = Arc::new(StoreManager::default());
 	let store = Store::new().await?;
 	let store = Arc::new(store);
 

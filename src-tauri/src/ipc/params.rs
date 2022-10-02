@@ -3,39 +3,30 @@
 //! The current best practice is to follow a single argument type, called "params" for all method (JSON-RPC's style).
 //!
 
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
-#[derive(Serialize, Deserialize)]
-pub struct CreateParams<D>
-where
-	D: Serialize,
-{
-	pub(crate) data: D,
+#[derive(Deserialize)]
+pub struct CreateParams<D> {
+	pub data: D,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct UpdateParams<D>
-where
-	D: Serialize,
-{
-	pub(crate) id: String,
-	pub(crate) data: D,
+#[derive(Deserialize)]
+pub struct UpdateParams<D> {
+	pub id: String,
+	pub data: D,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct ListParams<F>
-where
-	F: Serialize,
-{
-	pub(crate) filter: Option<F>,
+#[derive(Deserialize)]
+pub struct ListParams<F> {
+	pub filter: Option<F>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Deserialize)]
 pub struct GetParams {
-	pub(crate) id: String,
+	pub id: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Deserialize)]
 pub struct DeleteParams {
-	pub(crate) id: String,
+	pub id: String,
 }

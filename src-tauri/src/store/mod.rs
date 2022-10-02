@@ -1,9 +1,9 @@
-//! Small store layer to talk to the surrealdb.
+//! Small store layer to talk to the SurrealDB.
 //! This module is to narrow and normalize the lower level API surface
 //! to the rest of the application code (.e.g, Backend Model Controllers)
 
 use crate::prelude::*;
-use crate::utils::XTakeVal;
+use crate::utils::{map, XTakeVal};
 use std::collections::BTreeMap;
 use surrealdb::sql::{thing, Array, Datetime, Object, Value};
 use surrealdb::{Datastore, Session};
@@ -20,7 +20,7 @@ pub trait Filterable: Into<Value> {}
 //     Note: This is used to normalize the store access for what is
 //           needed for this application.
 
-/// Store struct normalizing application CRUD apis
+/// Store struct normalizing CRUD SurrealDB application calls
 pub struct Store {
 	ds: Datastore,
 	ses: Session,
@@ -34,21 +34,20 @@ impl Store {
 	}
 
 	pub async fn exec_get(&self, tid: &str) -> Result<Object> {
-		let sql = format!("SELECT * FROM $th");
+		let sql = "SELECT * FROM $th";
 
 		let vars = map!["th".into() => thing(tid)?.into()];
 
-		let ress = self.ds.execute(&sql, &self.ses, Some(vars), false).await?;
+		let ress = self.ds.execute(sql, &self.ses, Some(vars), true).await?;
 
-		let res = ress.into_iter().next().expect("Did not get a response");
+		let first_res = ress.into_iter().next().expect("Did not get a response");
 
-		W(res.result?.first()).try_into()
+		W(first_res.result?.first()).try_into()
 	}
 
 	pub async fn exec_create<T: Creatable>(&self, tb: &str, data: T) -> Result<String> {
-		let sql = s!("CREATE type::table($tb) CONTENT $data RETURN id");
+		let sql = "CREATE type::table($tb) CONTENT $data RETURN id";
 
-		// let mut data: Object = data.into().x_into()?;
 		let mut data: Object = W(data.into()).try_into()?;
 		let now = Datetime::default().timestamp_nanos();
 		data.insert("ctime".into(), now.into());
@@ -57,10 +56,10 @@ impl Store {
 			"tb".into() => tb.into(),
 			"data".into() => Value::from(data)];
 
-		let ress = self.ds.execute(&sql, &self.ses, Some(vars), false).await?;
-		let val = ress.into_iter().next().map(|r| r.result).expect("id not returned")?;
+		let ress = self.ds.execute(sql, &self.ses, Some(vars), false).await?;
+		let first_val = ress.into_iter().next().map(|r| r.result).expect("id not returned")?;
 
-		if let Value::Object(mut val) = val.first() {
+		if let Value::Object(mut val) = first_val.first() {
 			val.x_take_val::<String>("id")
 				.map_err(|ex| Error::StoreFailToCreate(f!("exec_create {tb} {ex}")))
 		} else {
@@ -69,13 +68,13 @@ impl Store {
 	}
 
 	pub async fn exec_merge<T: Patchable>(&self, tid: &str, data: T) -> Result<String> {
-		let sql = s!("UPDATE $th MERGE $data RETURN id");
+		let sql = "UPDATE $th MERGE $data RETURN id";
 
 		let vars = map![
 			"th".into() => thing(tid)?.into(),
 			"data".into() => data.into()];
 
-		let ress = self.ds.execute(&sql, &self.ses, Some(vars), false).await?;
+		let ress = self.ds.execute(sql, &self.ses, Some(vars), false).await?;
 
 		let res = ress.into_iter().next().expect("id not returned");
 
@@ -89,23 +88,23 @@ impl Store {
 	}
 
 	pub async fn exec_delete(&self, tid: &str) -> Result<String> {
-		let sql = format!("DELETE $th");
+		let sql = "DELETE $th";
 
 		let vars = map!["th".into() => thing(tid)?.into()];
 
-		let ress = self.ds.execute(&sql, &self.ses, Some(vars), false).await?;
+		let ress = self.ds.execute(sql, &self.ses, Some(vars), false).await?;
 
-		let res = ress.into_iter().next().expect("Did not get a response");
+		let first_res = ress.into_iter().next().expect("Did not get a response");
 
 		// Return the error if result failed
-		res.result?;
+		first_res.result?;
 
 		// return success
 		Ok(tid.to_string())
 	}
 
 	pub async fn exec_select(&self, tb: &str, filter: Option<Value>) -> Result<Vec<Object>> {
-		let mut sql = format!("SELECT * FROM type::table($tb)");
+		let mut sql = String::from("SELECT * FROM type::table($tb)");
 
 		let mut vars = BTreeMap::from([("tb".into(), tb.into())]);
 
@@ -125,17 +124,19 @@ impl Store {
 
 		let ress = self.ds.execute(&sql, &self.ses, Some(vars), false).await?;
 
-		let res = ress.into_iter().next().expect("Did not get a response");
+		let first_res = ress.into_iter().next().expect("Did not get a response");
 
 		// Get the result value as value array (fail if it is not)
-		let array: Array = W(res.result?).try_into()?;
+		let array: Array = W(first_res.result?).try_into()?;
 
-		// build the list of object
-		let mut objs: Vec<Object> = Vec::new();
-		for item in array.into_iter() {
-			objs.push(W(item).try_into()?);
-		}
+		// build the list of objects
+		array.into_iter().map(|value| W(value).try_into()).collect()
 
-		Ok(objs)
+		// Note: Above equivalent to
+		// let mut objs: Vec<Object> = Vec::new();
+		// for item in array.into_iter() {
+		// 	objs.push(W(item).try_into()?);
+		// }
+		// Ok(objs)
 	}
 }
