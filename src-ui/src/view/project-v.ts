@@ -13,14 +13,17 @@ const HTML = html`
 
 @customElement('project-v')
 export class ProjectView extends BaseHTMLElement { // extends HTMLElement
-  // --- Data
+
+  // #region    --- Data
   #project!: Project
   set project(p: Project) { this.#project = p; this.update(); }
+  // #endregion --- Data
 
-  // --- Key elements
+  // #region    --- Key Els
   #titleEl!: HTMLElement
   #contentEl!: HTMLElement
   #newTaskDInputEl!: DInputElement
+  // #endregion --- Key Els
 
   // #region    --- UI Events
   @onEvent("CHANGE", "d-input.new-task")
@@ -64,8 +67,6 @@ export class ProjectView extends BaseHTMLElement { // extends HTMLElement
       this.#contentEl.replaceChildren(taskDt);
     }
   }
-
-
 }
 declare global {
   interface HTMLElementTagNameMap {

@@ -17,13 +17,16 @@ const HTML = html`
   <d-ico class="menu action" name="ico-menu"></d-ico>
   <h1>Awesome App</h1>
   </header>
-  <nav-v>nav-v</nav-v>
-  <main>MAIN</main>
+  <nav-v></nav-v>
+  <main></main>
 `
 
-@customElement('app-v')
+@customElement('app-v') // same as customElements.define('app-v', AppView)
 export class AppView extends BaseHTMLElement { // extends HTMLElement
+
+  // #region    --- Key Els
   #mainEl!: HTMLElement
+  // #endregion --- Key Els
 
   // #region    --- App Events
   @onHub("Route", "change") // @onHub(hubName, topic, label?)
@@ -39,14 +42,12 @@ export class AppView extends BaseHTMLElement { // extends HTMLElement
   }
   // #endregion --- App Events
 
-
   // #region    --- UI Events
   @onEvent("pointerup", "header > c-ico.menu") // @onEvent(eventType, elementSelectorFromThis)
   onMenuClick(evt: PointerEvent) {
     this.classList.toggle("min-nav");
   }
   // #endregion --- UI Events
-
 
   init() { // Will be called by BaseHTMLElement once on first connectedCallback
     // clone the HTML documentFragment and get the key elements (to be used later)
@@ -66,7 +67,6 @@ export class AppView extends BaseHTMLElement { // extends HTMLElement
     // replace the children
     this.replaceChildren(content);
   }
-
 }
 declare global { // trick to augment the global TagName with this component
   interface HTMLElementTagNameMap {

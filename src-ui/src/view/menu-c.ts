@@ -5,8 +5,11 @@ type Options = { [k: string]: string | HTMLElement };
 
 @customElement('menu-c')
 export class MenuComponent extends BaseHTMLElement { // extends HTMLElement
-  // --- Data (disposable)
+
+  // #region    --- Data
+  // This data is disposable, no need to keep, and the key is stored as children attribute.
   set options(v: Options) { this.update(v) }
+  // #endregion --- Data
 
   // #region    --- UI Events
   @onEvent('pointerup', 'li')

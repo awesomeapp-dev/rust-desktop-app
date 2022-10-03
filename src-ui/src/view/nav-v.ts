@@ -15,8 +15,11 @@ const HTML = html`
 
 @customElement('nav-v')
 export class NavView extends BaseHTMLElement { // extends HTMLElement
+
+  // #region    --- Key Els
   #headerEl!: HTMLElement
   #contentEl!: HTMLElement
+  // #endregion --- Key Els
 
   // #region    --- App Events
   @onHub("Model", "project", "create")
@@ -113,8 +116,12 @@ declare global {
 
 @customElement('project-new-ipt')
 class ProjectNewInput extends BaseHTMLElement { // extends HTMLElement
-  #d_input!: DInputElement;
 
+  // #region    --- Key Els
+  #d_input!: DInputElement;
+  // #endregion --- Key Els
+
+  // #region    --- UI Events
   // Note: here we need keydown and preventDefault if we want to avoid the "ding" sound.
   @onEvent("keydown")
   onExecKey(evt: KeyboardEvent) {
@@ -123,6 +130,7 @@ class ProjectNewInput extends BaseHTMLElement { // extends HTMLElement
       evt.preventDefault();
     }
   }
+  // #endregion --- UI Events
 
   init() {
     this.#d_input = elem("d-input", { placeholder: "Project name (press Enter)" });

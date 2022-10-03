@@ -4,7 +4,8 @@ import { ensure_ModelMutateResultData } from '../bindings/type_asserts.js';
 import { ipc_invoke } from '../ipc.js';
 
 /**
- * Base Frontend Model Controller class with basic CRUD except `list` which will be per subclass for now
+ * Base Frontend Model Controller class with basic CRUD except `list` which will be per subclass for now.
+ * 
  * - M - For the Enity model type (e.g., Project)
  * - C - For the Create data type (e.g., ProjectForCreate)
  * - U - For the update data type (e.g., ProjectForUpdate)

@@ -20,19 +20,20 @@ const TASK_ROW_HTML = html`
 
 @customElement('tasks-dt')
 export class TasksDataTable extends BaseHTMLElement { // extends HTMLElement
-  // --- Data
+
+  // #region    --- Data
   #project_id!: string;
   set project_id(v: string) { this.#project_id = v; this.update() }
-
+  // #endregion --- Data
 
   // #region    --- App Event
-  /// Create will refresh the full datagrid, in case of sort by name and such
+  // Create will refresh the full datagrid, in case of sort by name and such
   @onHub("Model", "task", "create")
   onTaskCreate() {
     this.update();
   }
 
-  /// Delete can be more selective in this case, will delete the row
+  // Delete can be more selective in this case, will delete the row
   @onHub("Model", "task", "delete")
   onTaskDelete(data: ModelMutateResultData) {
     all(this, `task-row.${classable(data.id)}`).forEach(taskRowEl => {
@@ -139,7 +140,8 @@ declare global {
 // #region    --- task-row
 @customElement('task-row')
 export class TaskRow extends BaseHTMLElement { // extends HTMLElement
-  // --- Data
+
+  // #region    --- Data
   #task!: Task;
   set task(newTask: Task) {
     const oldTask = this.#task as Task | undefined;
@@ -149,12 +151,13 @@ export class TaskRow extends BaseHTMLElement { // extends HTMLElement
     }
   }
   get task() { return this.#task }
+  // #endregion --- Data
 
+  // #region    --- Key Els
   #checkEl!: DCheckElement;
   #titleEl!: HTMLElement;
   #infoEl!: HTMLElement;
-
-  get some_el(): HTMLElement { return first(this, "div")! }
+  // #endregion --- Key Els
 
   init() {
 

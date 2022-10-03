@@ -1,7 +1,7 @@
 //! index of all of the views and components.
 //!
 //! Notes:
-//!   - The responsibility of this mobile is to export/import all of the sub views/components
+//!   - The responsibility of this module is to export/import all of the sub views/components
 //!     as they must be preloaded to activate the HTML custom elements.
 //!   - This file will be imported by `main.ts` without the need to know the specifics of the views and components.
 //!   - Component notation follows "[domain_space]-[component_type]" where the domain_space is the entity or function of the components,
