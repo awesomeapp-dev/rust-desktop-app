@@ -74,11 +74,11 @@ impl Store {
 			"th".into() => thing(tid)?.into(),
 			"data".into() => data.into()];
 
-		let ress = self.ds.execute(sql, &self.ses, Some(vars), false).await?;
+		let ress = self.ds.execute(sql, &self.ses, Some(vars), true).await?;
 
-		let res = ress.into_iter().next().expect("id not returned");
+		let first_res = ress.into_iter().next().expect("id not returned");
 
-		let result = res.result?;
+		let result = first_res.result?;
 
 		if let Value::Object(mut val) = result.first() {
 			val.x_take_val("id")
@@ -120,7 +120,7 @@ impl Store {
 		}
 
 		// --- Apply the orderby
-		sql.push_str(&f!(" ORDER ctime DESC"));
+		sql.push_str(" ORDER ctime DESC");
 
 		let ress = self.ds.execute(&sql, &self.ses, Some(vars), false).await?;
 
