@@ -1,44 +1,44 @@
 :root {
-  font-size: 16px; /* Set the 1rem = 16px by default */
+	font-size: 16px; /* Set the 1rem = 16px by default */
 
-  color-scheme: dark;
+	color-scheme: dark;
 }
 
 /* best practice for application */
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 
-  /* To allow flex/grid box to shrink smaller than content. 
+	/* To allow flex/grid box to shrink smaller than content. 
 		see: https://stackoverflow.com/a/36247448/686724 */
-  min-width: 0;
-  min-height: 0;
+	min-width: 0;
+	min-height: 0;
 
-  /* layout normalization */
-  margin: 0;
-  padding: 0;
+	/* layout normalization */
+	margin: 0;
+	padding: 0;
 
-  /* font smoothing */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	/* font smoothing */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 
-  /* App feel */
-  user-select: none;
+	/* App feel */
+	user-select: none;
 }
 
 html,
 body {
-  height: 100%;
+	height: 100%;
 }
 
 html {
-  /* prevent the browser 'bounce' */
-  overflow: hidden;
+	/* prevent the browser 'bounce' */
+	overflow: hidden;
 }
 
 body {
-  font-family: 'Open Sans', sans-serif;
-  font-size: 1rem;
-  display: grid;
-  color: var(--txt);
-  background: var(--bkg-app);
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1rem;
+	display: grid;
+	color: var(--txt);
+	background: var(--bkg-app);
 }

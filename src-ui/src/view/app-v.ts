@@ -13,63 +13,63 @@ import { router } from '../router';
 
 // dom-native JS Tagged templates to create a DocumentFragment (parse once)
 const HTML = html`
-  <header>
-  <d-ico class="menu action" name="ico-menu"></d-ico>
-  <h1>Awesome App</h1>
-  </header>
-  <nav-v></nav-v>
-  <main></main>
+	<header>
+	<d-ico class="menu action" name="ico-menu"></d-ico>
+	<h1>Awesome App</h1>
+	</header>
+	<nav-v></nav-v>
+	<main></main>
 `
 
 @customElement('app-v') // same as customElements.define('app-v', AppView)
 export class AppView extends BaseHTMLElement { // extends HTMLElement
 
-  // #region    --- Key Els
-  #mainEl!: HTMLElement
-  // #endregion --- Key Els
+	// #region    --- Key Els
+	#mainEl!: HTMLElement
+	// #endregion --- Key Els
 
-  // #region    --- App Events
-  @onHub("Route", "change") // @onHub(hubName, topic, label?)
-  async onRouteChange() {
-    const { project_id } = router.get_current();
-    if (project_id != null) {
-      const project = await projectFmc.get(project_id);
-      const projectEl = elem('project-v', { $: { project } });
-      this.#mainEl.replaceChildren(projectEl);
-    } else {
-      this.#mainEl.textContent = "Welcome select project";
-    }
-  }
-  // #endregion --- App Events
+	// #region    --- App Events
+	@onHub("Route", "change") // @onHub(hubName, topic, label?)
+	async onRouteChange() {
+		const { project_id } = router.get_current();
+		if (project_id != null) {
+			const project = await projectFmc.get(project_id);
+			const projectEl = elem('project-v', { $: { project } });
+			this.#mainEl.replaceChildren(projectEl);
+		} else {
+			this.#mainEl.textContent = "Welcome select project";
+		}
+	}
+	// #endregion --- App Events
 
-  // #region    --- UI Events
-  @onEvent("pointerup", "header > c-ico.menu") // @onEvent(eventType, elementSelectorFromThis)
-  onMenuClick(evt: PointerEvent) {
-    this.classList.toggle("min-nav");
-  }
-  // #endregion --- UI Events
+	// #region    --- UI Events
+	@onEvent("pointerup", "header > c-ico.menu") // @onEvent(eventType, elementSelectorFromThis)
+	onMenuClick(evt: PointerEvent) {
+		this.classList.toggle("min-nav");
+	}
+	// #endregion --- UI Events
 
-  init() { // Will be called by BaseHTMLElement once on first connectedCallback
-    // clone the HTML documentFragment and get the key elements (to be used later)
-    let content = document.importNode(HTML, true);
+	init() { // Will be called by BaseHTMLElement once on first connectedCallback
+		// clone the HTML documentFragment and get the key elements (to be used later)
+		let content = document.importNode(HTML, true);
 
-    this.#mainEl = getFirst(content, "main");
+		this.#mainEl = getFirst(content, "main");
 
-    // beautify the header h1
-    const h1 = first(content, 'header > h1');
-    if (h1) {
-      if (h1.firstElementChild == null) {
-        const text = h1.textContent?.split(/[-_ ](.+)/) ?? ["NO", "NAME"];
-        h1.replaceChildren(html`<span>${text[0]}</span><span class="prime">${text[1]}</span>`)
-      }
-    }
+		// beautify the header h1
+		const h1 = first(content, 'header > h1');
+		if (h1) {
+			if (h1.firstElementChild == null) {
+				const text = h1.textContent?.split(/[-_ ](.+)/) ?? ["NO", "NAME"];
+				h1.replaceChildren(html`<span>${text[0]}</span><span class="prime">${text[1]}</span>`)
+			}
+		}
 
-    // replace the children
-    this.replaceChildren(content);
-  }
+		// replace the children
+		this.replaceChildren(content);
+	}
 }
 declare global { // trick to augment the global TagName with this component
-  interface HTMLElementTagNameMap {
-    'app-v': AppView;
-  }
+	interface HTMLElementTagNameMap {
+		'app-v': AppView;
+	}
 }

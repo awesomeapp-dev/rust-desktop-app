@@ -5,5 +5,5 @@
  * TODO: Need to make it more exhaustive.
  */
 export function classable(str: string): string {
-  return str.replace(":", "_");
+	return str.replace(":", "_");
 }

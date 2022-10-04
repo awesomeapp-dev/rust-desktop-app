@@ -7,11 +7,11 @@ import { deepFreeze } from 'utils-min';
  * best-practice: Light and narrow external api abstraction. 
  */
 export async function ipc_invoke(method: string, params?: object): Promise<any> {
-  const response: any = await invoke(method, { params });
-  if (response.error != null) {
-    console.log('ERROR - ipc_invoke - ipc_invoke error', response);
-    throw new Error(response.error);
-  } else {
-    return deepFreeze(response.result);
-  }
+	const response: any = await invoke(method, { params });
+	if (response.error != null) {
+		console.log('ERROR - ipc_invoke - ipc_invoke error', response);
+		throw new Error(response.error);
+	} else {
+		return deepFreeze(response.result);
+	}
 }

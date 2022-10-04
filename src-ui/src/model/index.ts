@@ -1,4 +1,3 @@
-
 import { ModelMutateResultData, Project, ProjectForCreate, ProjectForUpdate, Task, TaskForCreate, TaskForUpdate } from '../bindings/index.js';
 import { ensure_ModelMutateResultData } from '../bindings/type_asserts.js';
 import { ipc_invoke } from '../ipc.js';
@@ -21,6 +20,7 @@ class BaseFmc<M, C, U> {
   async get(id: string): Promise<M> {
     return ipc_invoke(`get_${this.#cmd_suffix}`, { id }).then(res => res.data);
   }
+
   async create(data: C): Promise<ModelMutateResultData> {
     return ipc_invoke(`create_${this.#cmd_suffix}`, { data }).then(res => {
       return ensure_ModelMutateResultData(res.data);

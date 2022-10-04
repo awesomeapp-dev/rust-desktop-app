@@ -13,12 +13,12 @@ loadDefaultIcons();
 // --- Initialize some assets on DOMContentLoaded
 document.addEventListener("DOMContentLoaded", async function (event) {
 
-  // Append the app custom icons 
-  // (similar to what loadDefaultIcons does for @dom-native/ui icons)
-  // (this allows to use the <use xlink:href="#symbol_id" ...> and update fill from css)
-  const svgEl = html(SYMBOLS).firstElementChild!;
-  svgEl.setAttribute('style', 'display: none'); // in case dom engine move it to body
-  document.head.appendChild(svgEl);
+	// Append the app custom icons 
+	// (similar to what loadDefaultIcons does for @dom-native/ui icons)
+	// (this allows to use the <use xlink:href="#symbol_id" ...> and update fill from css)
+	const svgEl = html(SYMBOLS).firstElementChild!;
+	svgEl.setAttribute('style', 'display: none'); // in case dom engine move it to body
+	document.head.appendChild(svgEl);
 });
 
 
