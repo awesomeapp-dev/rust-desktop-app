@@ -15,7 +15,6 @@ const HTML = html`
 
 @customElement('nav-v')
 export class NavView extends BaseHTMLElement { // extends HTMLElement
-
 	// #region    --- Key Els
 	#headerEl!: HTMLElement
 	#contentEl!: HTMLElement
@@ -116,7 +115,6 @@ declare global {
 
 @customElement('project-new-ipt')
 class ProjectNewInput extends BaseHTMLElement { // extends HTMLElement
-
 	// #region    --- Key Els
 	#d_input!: DInputElement;
 	// #endregion --- Key Els

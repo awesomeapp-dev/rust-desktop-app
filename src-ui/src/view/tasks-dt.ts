@@ -20,7 +20,6 @@ const TASK_ROW_HTML = html`
 
 @customElement('tasks-dt')
 export class TasksDataTable extends BaseHTMLElement { // extends HTMLElement
-
 	// #region    --- Data
 	#project_id!: string;
 	set project_id(v: string) { this.#project_id = v; this.update() }
@@ -140,7 +139,6 @@ declare global {
 // #region    --- task-row
 @customElement('task-row')
 export class TaskRow extends BaseHTMLElement { // extends HTMLElement
-
 	// #region    --- Data
 	#task!: Task;
 	set task(newTask: Task) {

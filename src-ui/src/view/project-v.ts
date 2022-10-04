@@ -13,7 +13,6 @@ const HTML = html`
 
 @customElement('project-v')
 export class ProjectView extends BaseHTMLElement { // extends HTMLElement
-
 	// #region    --- Data
 	#project!: Project
 	set project(p: Project) { this.#project = p; this.update(); }

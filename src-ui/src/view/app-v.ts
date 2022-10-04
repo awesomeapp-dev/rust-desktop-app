@@ -23,7 +23,6 @@ const HTML = html`
 
 @customElement('app-v') // same as customElements.define('app-v', AppView)
 export class AppView extends BaseHTMLElement { // extends HTMLElement
-
 	// #region    --- Key Els
 	#mainEl!: HTMLElement
 	// #endregion --- Key Els
