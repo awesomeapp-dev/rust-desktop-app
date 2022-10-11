@@ -1,10 +1,10 @@
 //! Here we are following a "JSON-RPC 2.0" styleesponse with error or result.
 //!
 //! Notes:
-//! 	- For now, we do not handle the "request.id" of "JSON-RPC 2.0", and request batching
-//!     but this could be added later.
-//! 	- The benefit of following the "JSON-RPC 2.0" scheme is that the frontend could be adapted to talk to a
-//!     web server with minimum effort, and the JSON-RPC data format for request/response is simple, clean, and well thought out.
+//!     - For now, we do not handle the "request.id" of "JSON-RPC 2.0", and request batching
+//!       but this could be added later.
+//!     - The benefit of following the "JSON-RPC 2.0" scheme is that the frontend could be adapted to talk to a
+//!       web server with minimum effort, and the JSON-RPC data format for request/response is simple, clean, and well thought out.
 
 use crate::prelude::*;
 use serde::Serialize;
@@ -39,7 +39,7 @@ where
 		match res {
 			Ok(data) => IpcResponse {
 				error: None,
-				result: Some(IpcSimpleResult { data: data }),
+				result: Some(IpcSimpleResult { data }),
 			},
 			Err(err) => IpcResponse {
 				error: Some(IpcError {

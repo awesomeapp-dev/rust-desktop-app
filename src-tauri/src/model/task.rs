@@ -141,7 +141,7 @@ impl TaskBmc {
 	const ENTITY: &'static str = "task";
 
 	pub async fn get(ctx: Arc<Ctx>, id: &str) -> Result<Task> {
-		bmc_get::<Task>(ctx, Self::ENTITY, &id).await
+		bmc_get::<Task>(ctx, Self::ENTITY, id).await
 	}
 
 	pub async fn create(ctx: Arc<Ctx>, data: TaskForCreate) -> Result<ModelMutateResultData> {

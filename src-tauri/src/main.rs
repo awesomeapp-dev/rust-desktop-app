@@ -52,24 +52,20 @@ async fn main() -> Result<()> {
 
 /// Only use while developing. Convenient when to seed the store on start of the application.
 async fn seed_store(store: Arc<Store>) -> Result<()> {
-	let ps = ["A", "B"]
-		.into_iter()
-		.map(|k| {
-			(
-				k,
-				ProjectForCreate {
-					name: format!("Project {k}"),
-				},
-			)
-		})
-		.collect::<Vec<_>>();
+	let ps = ["A", "B"].into_iter().map(|k| {
+		(
+			k,
+			ProjectForCreate {
+				name: format!("Project {k}"),
+			},
+		)
+	});
 
-	for (k, project) in ps.into_iter() {
-		let project_id =
-			store.exec_create::<ProjectForCreate>("project", project.into()).await?;
+	for (k, project) in ps {
+		let project_id = store.exec_create::<ProjectForCreate>("project", project).await?;
 
 		for i in 1..=200 {
-			let done = if i % 2 == 0 { true } else { false };
+			let done = i % 2 == 0;
 			let task = TaskForCreate {
 				project_id: project_id.clone(),
 				title: format!("Task {k}.{i}"),
@@ -77,7 +73,7 @@ async fn seed_store(store: Arc<Store>) -> Result<()> {
 				done: Some(done),
 			};
 
-			store.exec_create::<TaskForCreate>("task", task.into()).await?;
+			store.exec_create::<TaskForCreate>("task", task).await?;
 		}
 	}
 

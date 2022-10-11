@@ -115,7 +115,7 @@ impl ProjectBmc {
 	const ENTITY: &'static str = "project";
 
 	pub async fn get(ctx: Arc<Ctx>, id: &str) -> Result<Project> {
-		bmc_get(ctx, Self::ENTITY, &id).await
+		bmc_get(ctx, Self::ENTITY, id).await
 	}
 
 	pub async fn create(

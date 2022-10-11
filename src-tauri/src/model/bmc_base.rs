@@ -12,7 +12,7 @@ pub async fn bmc_get<E>(ctx: Arc<Ctx>, _entity: &'static str, id: &str) -> Resul
 where
 	E: TryFrom<Object, Error = Error>,
 {
-	ctx.get_store().exec_get(&id).await?.try_into()
+	ctx.get_store().exec_get(id).await?.try_into()
 }
 
 pub async fn bmc_create<D>(
@@ -40,7 +40,7 @@ pub async fn bmc_update<D>(
 where
 	D: Patchable,
 {
-	let id = ctx.get_store().exec_merge(&id, data).await?;
+	let id = ctx.get_store().exec_merge(id, data).await?;
 
 	let result_data = ModelMutateResultData::from(id);
 	fire_model_event(&ctx, entity, "update", result_data.clone());
@@ -53,7 +53,7 @@ pub async fn bmc_delete(
 	entity: &'static str,
 	id: &str,
 ) -> Result<ModelMutateResultData> {
-	let id = ctx.get_store().exec_delete(&id).await?;
+	let id = ctx.get_store().exec_delete(id).await?;
 	let result_data = ModelMutateResultData::from(id);
 
 	fire_model_event(&ctx, entity, "delete", result_data.clone());
