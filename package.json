@@ -9,6 +9,7 @@
     "rollup": "rollup -c",
     "ui-build": "rollup -c & pcss",
     "ui-dev": "rollup -c -w & pcss -w & npm run localhost",
+    "app-icons": "tauri icon src-tauri/icons/app-icon.png",
     "svg-symbols": "sketchdev"
   },
   "dependencies": {
