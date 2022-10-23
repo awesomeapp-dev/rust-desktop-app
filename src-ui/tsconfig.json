@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		// For modern runtimes & rollup
-		"target": "ES2022",
+		"target": "ES2018",
 		"module": "ES2022",
 
 		// For interop
