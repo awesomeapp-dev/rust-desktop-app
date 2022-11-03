@@ -22,7 +22,8 @@ tauri = { version = "1", features = [] }
 # For dev and to easy first time build experience, just have memory surrealdb for  now.
 surrealdb = {version = "1.0.0-beta.8", default-features=false, features = ['parallel', 'kv-mem'] }
 parking_lot = "0.12"
-ts-rs = { version = "6", features = ["format"] }
+# NOTE: , features = ["format"] would be nice, but it is very heavy, and sometime have compiles issues with swc_ components
+ts-rs = { version = "6" }
 
 [dev-dependencies]
 
