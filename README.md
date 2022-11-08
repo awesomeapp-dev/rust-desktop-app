@@ -53,6 +53,18 @@ IMPORTANT: Make sure to have **node.js 18** and above.
   - `cargo build` 
   - This might be an important first step when using full surrealdb (i.e., with default features and not only kv-mem) 
 
+## Requirements on fedora 36:
+
+On Fedora, and probably linux, the following needs to be present on the system. 
+
+```sh
+dnf install gtk3-devel
+dnf install webkit2gtk3-jsc-devel 
+dnf install libsoup-devel
+dnf install webkit2gtk3-devel.x86_64
+```
+
+
 <br /><br />
 
 ## Happy Coding!
