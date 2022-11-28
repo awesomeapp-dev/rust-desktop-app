@@ -6,8 +6,9 @@ import { taskFmc } from '../model/index.js';
 const HTML = html`
 <header>
 <h1></h1>
-<d-input class="new-task" placeholder="Enter new task (press enter)"></d-input>
+<d-input class="search-task" placeholder="Search your task"></d-input>
 </header>
+<d-input class="new-task" placeholder="Enter new task (press enter)"></d-input>
 <section></section>
 `;
 
@@ -41,6 +42,16 @@ export class ProjectView extends BaseHTMLElement { // extends HTMLElement
 		}
 	}
 
+	@onEvent("CHANGE", "d-input.search-task")
+	onSearchChange(evt: OnEvent) {
+		let search = (<DInputElement>evt.selectTarget).value.trim() as string;
+		if (search.length > 0) {
+			this.update({ title: { $contains: search } });
+		} else {
+			this.update();
+		}
+	}
+
 	@onEvent("EMPTY", "tasks-dt")
 	onTasksIsEmpty() {
 		this.#newTaskDInputEl.focus();
@@ -52,17 +63,16 @@ export class ProjectView extends BaseHTMLElement { // extends HTMLElement
 
 		[this.#titleEl, this.#contentEl, this.#newTaskDInputEl] = getFirst(content, "h1", "section", "d-input");
 
-
 		this.replaceChildren(content);
 
 		this.update()
 	}
 
-	async update() {
+	async update(filter?: any) {
 		if (this.#contentEl && this.#titleEl) {
 			this.#titleEl.textContent = this.#project.name;
 
-			const taskDt = elem('tasks-dt', { $: { project_id: this.#project.id } });
+			const taskDt = elem('tasks-dt', { $: { project_id: this.#project.id, filter } });
 			this.#contentEl.replaceChildren(taskDt);
 		}
 	}

@@ -2,11 +2,12 @@
 //!
 
 use super::bmc_base::{bmc_create, bmc_delete, bmc_get, bmc_list, bmc_update};
+use super::store::{Creatable, Filterable, Patchable};
 use super::ModelMutateResultData;
 use crate::ctx::Ctx;
 use crate::prelude::*;
-use crate::store::{Creatable, Filterable, Patchable};
 use crate::utils::{map, XTake, XTakeVal};
+use modql::{FilterNodes, ListOptions, StringOpVals};
 use serde::{Deserialize, Serialize};
 use serde_with_macros::skip_serializing_none;
 use std::collections::BTreeMap;
@@ -113,20 +114,10 @@ impl Patchable for TaskForUpdate {}
 
 // region:    --- TaskFilter
 
-#[derive(Deserialize, Debug)]
+#[derive(FilterNodes, Deserialize, Debug)]
 pub struct TaskFilter {
-	project_id: Option<String>,
-}
-
-impl From<TaskFilter> for Value {
-	fn from(val: TaskFilter) -> Self {
-		Value::Object(
-			map![
-				"project_id".into() => val.project_id.into(),
-			]
-			.into(),
-		)
-	}
+	pub project_id: Option<StringOpVals>,
+	pub title: Option<StringOpVals>,
 }
 
 impl Filterable for TaskFilter {}
@@ -161,7 +152,12 @@ impl TaskBmc {
 	}
 
 	pub async fn list(ctx: Arc<Ctx>, filter: Option<TaskFilter>) -> Result<Vec<Task>> {
-		bmc_list(ctx, Self::ENTITY, filter).await
+		let opts = ListOptions {
+			limit: None,
+			offset: None,
+			order_bys: Some("!ctime".into()),
+		};
+		bmc_list(ctx, Self::ENTITY, filter, opts).await
 	}
 }
 

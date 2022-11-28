@@ -1,9 +1,9 @@
 project-v {
   margin: 0 0 1rem 0;
   display: grid;
-  grid-template-rows: var(--app-header-height) 1fr;
+  grid-template-rows: var(--app-header-height) 3rem 1fr;
 
-  & > header { 
+  & > header {
     padding: 0 0 0 3rem;
     font-size: 1.25rem;
     font-weight: 600;
@@ -12,7 +12,7 @@ project-v {
     background: var(--bkg-30);
 
     align-items: center;
-    grid-template-columns: max-content minmax(10rem, 20rem);
+    grid-template-columns: max-content 20rem;
     gap: 2rem;
 
     h1 {
@@ -21,10 +21,17 @@ project-v {
       text-transform: uppercase;
       letter-spacing: .04em;
     }
-    
+
   }
 
-  & > section { 
+  .new-task {
+    margin: 1rem;
+    width: 30rem;
+    align-self: flex-start;
+    justify-self: right;
+  }
+
+  & > section {
     padding: 1rem 2rem;
     display: grid;
   }

@@ -4,19 +4,25 @@
 //! The application code call the model controllers, and the
 //! model controller calls the store and fire model events as appropriate.
 //!
-
 use crate::ctx::Ctx;
 use crate::event::HubEvent;
 use serde::Serialize;
+use store::SurrealStore;
 use ts_rs::TS;
 
 mod bmc_base;
+mod model_store;
 mod project;
+mod seed_for_dev;
+mod store;
 mod task;
 
 // --- Re-exports
+pub use model_store::*;
 pub use project::*;
 pub use task::*;
+// For dev only
+pub use seed_for_dev::seed_store_for_dev;
 
 // region:    --- Model Event
 
@@ -51,3 +57,24 @@ impl From<String> for ModelMutateResultData {
 }
 
 // endregion: --- Common Model Result Data
+
+// region:    --- Tests
+#[cfg(test)]
+mod tests {
+	use modql::{FilterNodes, StringOpVal, StringOpVals};
+
+	#[derive(Debug, FilterNodes)]
+	struct ProjectFilter {
+		id: Option<StringOpVals>,
+	}
+
+	#[test]
+	fn test_simple() -> anyhow::Result<()> {
+		let pf = ProjectFilter {
+			id: Some(StringOpVal::Eq("hello".to_string()).into()),
+		};
+		println!("{pf:?}");
+		Ok(())
+	}
+}
+// endregion: --- Tests

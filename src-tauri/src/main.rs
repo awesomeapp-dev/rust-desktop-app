@@ -1,35 +1,34 @@
+// #![allow(unused)]
 #![cfg_attr(
 	all(not(debug_assertions), target_os = "windows"),
 	windows_subsystem = "windows"
 )]
 
 use crate::ipc::{
-	create_project, create_task, delete_project, delete_task, get_project, get_task,
-	list_projects, list_tasks, update_project, update_task,
+	create_project, create_task, delete_project, delete_task, get_project, get_task, list_projects,
+	list_tasks, update_project, update_task,
 };
 use crate::prelude::*;
-use model::{ProjectForCreate, TaskForCreate};
+use model::{seed_store_for_dev, ModelStore};
 use std::sync::Arc;
-use store::Store;
 mod ctx;
 mod error;
 mod event;
 mod ipc;
 mod model;
 mod prelude;
-mod store;
 mod utils;
 
 #[tokio::main]
 async fn main() -> Result<()> {
-	let store = Store::new().await?;
-	let store = Arc::new(store);
+	let model_manager = ModelStore::new().await?;
+	let model_manager = Arc::new(model_manager);
 
 	// for dev only
-	seed_store(store.clone()).await?;
+	seed_store_for_dev(model_manager.clone()).await?;
 
 	tauri::Builder::default()
-		.manage(store)
+		.manage(model_manager)
 		.invoke_handler(tauri::generate_handler![
 			// Project
 			get_project,
@@ -46,36 +45,6 @@ async fn main() -> Result<()> {
 		])
 		.run(tauri::generate_context!())
 		.expect("error while running tauri application");
-
-	Ok(())
-}
-
-/// Only use while developing. Convenient when to seed the store on start of the application.
-async fn seed_store(store: Arc<Store>) -> Result<()> {
-	let ps = ["A", "B"].into_iter().map(|k| {
-		(
-			k,
-			ProjectForCreate {
-				name: format!("Project {k}"),
-			},
-		)
-	});
-
-	for (k, project) in ps {
-		let project_id = store.exec_create::<ProjectForCreate>("project", project).await?;
-
-		for i in 1..=200 {
-			let done = i % 2 == 0;
-			let task = TaskForCreate {
-				project_id: project_id.clone(),
-				title: format!("Task {k}.{i}"),
-				desc: None,
-				done: Some(done),
-			};
-
-			store.exec_create::<TaskForCreate>("task", task).await?;
-		}
-	}
 
 	Ok(())
 }

@@ -23,6 +23,9 @@ export class TasksDataTable extends BaseHTMLElement { // extends HTMLElement
 	// #region    --- Data
 	#project_id!: string;
 	set project_id(v: string) { this.#project_id = v; this.update() }
+
+	#filter?: any
+	set filter(f: any) { this.#filter = f; this.update() }
 	// #endregion --- Data
 
 	// #region    --- App Event
@@ -115,7 +118,11 @@ export class TasksDataTable extends BaseHTMLElement { // extends HTMLElement
 
 	async update() {
 		if (this.initialized) {
-			const tasks = await taskFmc.list(this.#project_id);
+			const filter = {
+				project_id: this.#project_id,
+				...this.#filter
+			}
+			const tasks = await taskFmc.list(filter);
 
 			const content = frag(tasks, task => elem('task-row', { $: { task } }));
 

@@ -4,10 +4,10 @@
 use super::{CreateParams, DeleteParams, GetParams, IpcResponse, ListParams, UpdateParams};
 use crate::ctx::Ctx;
 use crate::model::{
-	ModelMutateResultData, Project, ProjectBmc, ProjectFilter, ProjectForCreate,
-	ProjectForUpdate,
+	ModelMutateResultData, Project, ProjectBmc, ProjectForCreate, ProjectForUpdate,
 };
 use crate::prelude::*;
+use serde_json::Value;
 use tauri::{command, AppHandle, Wry};
 
 #[command]
@@ -54,10 +54,13 @@ pub async fn delete_project(
 #[command]
 pub async fn list_projects(
 	app: AppHandle<Wry>,
-	params: ListParams<ProjectFilter>,
+	params: ListParams<Value>,
 ) -> IpcResponse<Vec<Project>> {
 	match Ctx::from_app(app) {
-		Ok(ctx) => ProjectBmc::list(ctx, params.filter).await.into(),
+		Ok(ctx) => match params.filter.map(serde_json::from_value).transpose() {
+			Ok(filter) => ProjectBmc::list(ctx, filter).await.into(),
+			Err(err) => Err(Error::JsonSerde(err)).into(),
+		},
 		Err(_) => Err(Error::CtxFail).into(),
 	}
 }

@@ -1,12 +1,12 @@
 //! All model and controller for the Project type
 //!
-
 use super::bmc_base::{bmc_create, bmc_delete, bmc_get, bmc_list, bmc_update};
+use super::store::{Creatable, Filterable, Patchable};
 use super::ModelMutateResultData;
 use crate::ctx::Ctx;
 use crate::prelude::*;
-use crate::store::{Creatable, Filterable, Patchable};
-use crate::utils::{map, XTakeVal};
+use crate::utils::XTakeVal;
+use modql::{FilterNodes, ListOptions, StringOpVals};
 use serde::{Deserialize, Serialize};
 use serde_with_macros::skip_serializing_none;
 use std::collections::BTreeMap;
@@ -15,7 +15,6 @@ use surrealdb::sql::{Object, Value};
 use ts_rs::TS;
 
 // region:    --- Project
-
 #[derive(Serialize, TS, Debug)]
 #[ts(export, export_to = "../src-ui/src/bindings/")]
 pub struct Project {
@@ -36,7 +35,6 @@ impl TryFrom<Object> for Project {
 		Ok(project)
 	}
 }
-
 // endregion: --- Project
 
 // region:    --- ProjectForCreate
@@ -87,20 +85,10 @@ impl Patchable for ProjectForUpdate {}
 
 // region:    --- ProjectFilter
 
-#[derive(Deserialize, Debug)]
+#[derive(FilterNodes, Deserialize, Debug)]
 pub struct ProjectFilter {
-	name: Option<String>,
-}
-
-impl From<ProjectFilter> for Value {
-	fn from(val: ProjectFilter) -> Self {
-		Value::Object(
-			map![
-				"name".into() => val.name.into(),
-			]
-			.into(),
-		)
-	}
+	pub id: Option<StringOpVals>,
+	pub name: Option<StringOpVals>,
 }
 
 impl Filterable for ProjectFilter {}
@@ -118,10 +106,7 @@ impl ProjectBmc {
 		bmc_get(ctx, Self::ENTITY, id).await
 	}
 
-	pub async fn create(
-		ctx: Arc<Ctx>,
-		data: ProjectForCreate,
-	) -> Result<ModelMutateResultData> {
+	pub async fn create(ctx: Arc<Ctx>, data: ProjectForCreate) -> Result<ModelMutateResultData> {
 		bmc_create(ctx, Self::ENTITY, data).await
 	}
 
@@ -138,7 +123,7 @@ impl ProjectBmc {
 	}
 
 	pub async fn list(ctx: Arc<Ctx>, filter: Option<ProjectFilter>) -> Result<Vec<Project>> {
-		bmc_list(ctx, Self::ENTITY, filter).await
+		bmc_list(ctx, Self::ENTITY, filter, ListOptions::default()).await
 	}
 }
 

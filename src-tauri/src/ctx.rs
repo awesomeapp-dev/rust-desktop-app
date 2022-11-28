@@ -8,14 +8,14 @@
 //!     - For a single user, desktop application, this object is much simpler as authorization and logging requirements are much reduced.
 
 use crate::event::HubEvent;
+use crate::model::ModelStore;
 use crate::prelude::*;
-use crate::store::Store;
 use serde::Serialize;
 use std::sync::Arc;
 use tauri::{AppHandle, Manager, Wry};
 
 pub struct Ctx {
-	store: Arc<Store>,
+	model_manager: Arc<ModelStore>,
 	app_handle: AppHandle<Wry>,
 }
 
@@ -28,13 +28,13 @@ impl Ctx {
 impl Ctx {
 	pub fn new(app_handle: AppHandle<Wry>) -> Self {
 		Ctx {
-			store: (*app_handle.state::<Arc<Store>>()).clone(),
+			model_manager: (*app_handle.state::<Arc<ModelStore>>()).clone(),
 			app_handle,
 		}
 	}
 
-	pub fn get_store(&self) -> Arc<Store> {
-		self.store.clone()
+	pub fn get_model_manager(&self) -> Arc<ModelStore> {
+		self.model_manager.clone()
 	}
 
 	pub fn emit_hub_event<D: Serialize + Clone>(&self, hub_event: HubEvent<D>) {

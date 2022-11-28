@@ -22,6 +22,15 @@ pub enum Error {
 	StoreFailToCreate(String),
 
 	#[error(transparent)]
+	Modql(#[from] modql::Error),
+
+	#[error(transparent)]
+	JsonSerde(#[from] serde_json::Error),
+
+	#[error("Modql OpVal not supported by Store: {0}'")]
+	ModqlOperatorNotSupported(String),
+
+	#[error(transparent)]
 	Surreal(#[from] surrealdb::Error),
 
 	#[error(transparent)]
