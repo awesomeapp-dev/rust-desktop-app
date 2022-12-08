@@ -4,6 +4,7 @@
 //! The application code call the model controllers, and the
 //! model controller calls the store and fire model events as appropriate.
 //!
+
 use crate::ctx::Ctx;
 use crate::event::HubEvent;
 use serde::Serialize;

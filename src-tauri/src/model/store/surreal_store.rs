@@ -1,5 +1,6 @@
 //! Small store layer to talk to the SurrealDB.
-//! This module is to narrow and normalize the lower level API surface
+//!
+//! This module is to narrow and normalize the surrealdb API surface
 //! to the rest of the application code (.e.g, Backend Model Controllers)
 
 use crate::prelude::*;
@@ -383,6 +384,54 @@ mod tests {
 		assert_eq!(rs.len(), 8, "Number of tasks ending with '11' OR '22'");
 		// TODO: Need to check the order
 
+		// for mut obj in rs.into_iter() {
+		// 	println!(
+		// 		"{:?} {:?}",
+		// 		obj.x_take_val::<String>("title")?,
+		// 		obj.x_take_val::<bool>("done")?
+		// 	);
+		// }
+
+		Ok(())
+	}
+
+	#[tokio::test]
+	async fn test_surreal_select_offset_limit() -> anyhow::Result<()> {
+		// --- FIXTURE
+		let model_manager = get_shared_test_store().await;
+		let filter_nodes_1 = vec![FilterNode::new("title", StringOpVal::EndsWith("11".into()))];
+		let filter_nodes_2 = vec![FilterNode::new("title", StringOpVal::EndsWith("22".into()))];
+
+		let list_options = ListOptions {
+			order_bys: Some(vec!["done", "title"].into()),
+			limit: Some(2),
+			offset: Some(1),
+		};
+
+		// --- EXEC
+		let mut rs = model_manager
+			.store()
+			.exec_select(
+				"task",
+				Some(vec![filter_nodes_1, filter_nodes_2]),
+				list_options,
+			)
+			.await?;
+
+		// --- CHECK
+		assert_eq!(rs.len(), 2, "Number of tasks when Limit = 2");
+		// Check tasks
+		// Note: This will reverse order checked as we are usin pop.
+		assert_eq!(
+			"Task B.11",
+			rs.pop().unwrap().x_take_val::<String>("title")?
+		);
+		assert_eq!(
+			"Task A.111",
+			rs.pop().unwrap().x_take_val::<String>("title")?
+		);
+
+		// --- Visualy check results
 		// for mut obj in rs.into_iter() {
 		// 	println!(
 		// 		"{:?} {:?}",

@@ -1,3 +1,15 @@
+//! ModQL implementation for the surrealdb store.
+//!
+//! For now the following is implemented:
+//!
+//! - FilterNodes with OrGroups
+//! - ListOptions.offset
+//! - ListOptions.limit
+//! - ListOptions.order_by
+//!
+//! TODO: Implements the IncludeNodes when available in ModQL.
+//!
+
 use std::collections::BTreeMap;
 
 use crate::prelude::*;
@@ -57,11 +69,14 @@ pub(super) fn build_select_query(
 		sql.push_str(&obs);
 	}
 
-	// TODO: Apply the offset
-
 	// --- Apply the limit
 	if let Some(limit) = list_options.limit {
 		sql.push_str(&f!(" LIMIT {limit}"));
+	}
+
+	// --- Apply the offset
+	if let Some(offset) = list_options.offset {
+		sql.push_str(&f!(" START {offset}"));
 	}
 
 	Ok((sql, vars))
