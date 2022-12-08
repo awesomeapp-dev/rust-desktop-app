@@ -3,7 +3,7 @@
 //! to the rest of the application code (.e.g, Backend Model Controllers)
 
 use crate::prelude::*;
-use crate::utils::{map, XTakeVal};
+use crate::utils::{map, XTake};
 use modql::{ListOptions, OrGroups};
 use surrealdb::sql::{thing, Array, Datetime, Object, Value};
 use surrealdb::{Datastore, Session};
@@ -143,7 +143,7 @@ mod tests {
 	use tokio::sync::OnceCell;
 
 	use crate::model::ModelStore;
-	use crate::utils::{XTake, XTakeVal};
+	use crate::utils::XTake;
 
 	static STORE_ONCE: OnceCell<Arc<ModelStore>> = OnceCell::const_new();
 

@@ -1,5 +1,7 @@
-//! XTake implementations for store related types
+//! XTakeImpl implementations for the surrealdb Object types.
 //!
+//! This will give the `.x_take(key)` and `.x_take_val(key)` from
+//! the `XTake` blanket implementation.
 
 use crate::prelude::*;
 use crate::utils::XTakeImpl;

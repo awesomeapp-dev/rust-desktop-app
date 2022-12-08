@@ -5,7 +5,7 @@ use super::store::{Creatable, Filterable, Patchable};
 use super::ModelMutateResultData;
 use crate::ctx::Ctx;
 use crate::prelude::*;
-use crate::utils::XTakeVal;
+use crate::utils::XTake;
 use modql::{FilterNodes, ListOptions, StringOpVals};
 use serde::{Deserialize, Serialize};
 use serde_with_macros::skip_serializing_none;

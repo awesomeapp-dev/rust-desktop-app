@@ -1,14 +1,15 @@
-//! XTake(s) remove, return, and type transform value from a key/value object like structure.
+//! XTake trait is about taking a value from an object for a given key.
 //!
-//! The API to be used are turbofishable:
+//! The trait to implement for a type is the `XTakeImpl` which has only one function.
 //!
-//! - .x_take<T>(key) - which return an object of type T. Will Err if is not of type
-//! - .x_take_val<T>(key)
+//! `x_take_impl(&mut self, k: &str) -> Result<Option<T>>`
 //!
-//! The trait to implement is XTakeImpl and the XTake and XTakeVal are designed to be blanket implementation.
+//! Then, XTake is a blanket implementation (Do not implement it) with
+//! - `x_take` that returns a `Result<Option<T>>`
+//! - `x_take_val` that returns `Result<T>` (i.e. fails if no value for key)
 //!
 
-use crate::prelude::{Error, Result};
+use crate::prelude::*;
 
 /// Remove and return the Option<value> for a given type and key.
 /// If no value for this key, return Result<None>.
@@ -24,29 +25,21 @@ pub trait XTake {
 	fn x_take<T>(&mut self, k: &str) -> Result<Option<T>>
 	where
 		Self: XTakeImpl<T>;
-}
 
-/// Blanket implementation
-impl<S> XTake for S {
-	fn x_take<T>(&mut self, k: &str) -> Result<Option<T>>
-	where
-		Self: XTakeImpl<T>,
-	{
-		XTakeImpl::x_take_impl(self, k)
-	}
-}
-
-/// Take the value and return Error if None.
-/// Note: Has a blanket implementation. Not to be implemented directly.
-///       XTakeInto is the to be implemented trait
-pub trait XTakeVal {
 	fn x_take_val<T>(&mut self, k: &str) -> Result<T>
 	where
 		Self: XTakeImpl<T>;
 }
 
 /// Blanket implementation
-impl<S> XTakeVal for S {
+impl<O> XTake for O {
+	fn x_take<T>(&mut self, k: &str) -> Result<Option<T>>
+	where
+		Self: XTakeImpl<T>,
+	{
+		XTakeImpl::x_take_impl(self, k)
+	}
+
 	fn x_take_val<T>(&mut self, k: &str) -> Result<T>
 	where
 		Self: XTakeImpl<T>,

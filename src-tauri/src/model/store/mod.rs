@@ -4,7 +4,7 @@ use surrealdb::sql::Value;
 mod surreal_modql;
 mod surreal_store;
 mod try_froms;
-mod x_takes;
+mod x_take_impl;
 
 // --- Re-export
 pub(super) use surreal_store::SurrealStore;
