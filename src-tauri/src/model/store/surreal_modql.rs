@@ -83,6 +83,8 @@ pub(super) fn build_select_query(
 }
 
 /// Private helper to sqlize a a OpVal for SurrealDB
+///
+/// #
 fn sqlize(opval: OpVal, prop_name: &str, var_idx: &str) -> Result<(String, Value)> {
 	Ok(match opval {
 		// Eq

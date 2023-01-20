@@ -15,6 +15,7 @@ use surrealdb::sql::{Object, Value};
 use ts_rs::TS;
 
 // region:    --- Project
+
 #[derive(Serialize, TS, Debug)]
 #[ts(export, export_to = "../src-ui/src/bindings/")]
 pub struct Project {
@@ -35,6 +36,7 @@ impl TryFrom<Object> for Project {
 		Ok(project)
 	}
 }
+
 // endregion: --- Project
 
 // region:    --- ProjectForCreate
