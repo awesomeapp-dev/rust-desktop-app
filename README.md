@@ -70,7 +70,9 @@ dnf install webkit2gtk3-devel.x86_64
 
 ```sh
 npm i
-npm i -g tauri
+
+# install latest tauri in case there is none
+npm i -g @tauri-apps/cli @tauri-apps/api
 
 sudo aptitude install -y \
   build-essential \
