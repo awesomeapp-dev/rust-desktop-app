@@ -1,6 +1,6 @@
 {
   "name": "awesome-app-base",
-  "version": "0.9.17",
+  "version": "0.9.18",
   "type": "module",
   "scripts": {
     "tauri": "tauri",
@@ -22,11 +22,11 @@
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-typescript": "^11.0.0",
     "@tauri-apps/cli": "^1.2.3",
-    "pcss-cli": "^0.2.8",
-    "rollup": "^3.10.1",
+    "pcss-cli": "^0.2.9",
+    "rollup": "^3.19.1",
     "servor": "^4.0.2",
     "sketchdev": "^0.7.4",
-    "tslib": "^2.4.1",
-    "typescript": "^4.9.4"
+    "tslib": "^2.5.0",
+    "typescript": "^4.9.5"
   }
 }

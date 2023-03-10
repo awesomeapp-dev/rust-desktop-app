@@ -30,7 +30,7 @@ We recommend using `awesome-app dev` but running each command manually might hel
 
 # Build manually
 
-IMPORTANT: Make sure to have **node.js 18** and above. 
+IMPORTANT: Make sure to have **node.js latest of 16** or above. 
 
 - `npm run tauri icon src-tauri/icons/app-icon.png` - This will build the application icons. 
 
@@ -40,7 +40,7 @@ IMPORTANT: Make sure to have **node.js 18** and above.
 
 - `npm run localhost` - This will run a localhost server with the `dist/` folder as root (frontend hot reload)
 
-- In another terminal, `npm tauri dev` - Will start the Tauri build and start the process. 
+- In another terminal, `npm run tauri dev` - Will start the Tauri build and start the process.
 
 <br />
 
