@@ -1,11 +1,12 @@
 # Rust Base App Template for AWESOME-APP
 
-
 Base desktop application code with Tauri, Native Web Components, and SurrealDB (follow the VMES app architecture)
 
 **See [awesomeapp.org](https://awesomeapp.org) for more info**
 
 **[Discord Awesome App](https://discord.gg/XuKWrNGKpC) for any questions, issues, or anything else**
+
+> Note: To enable persitent storage, edit the `src-tauri/Cargo.toml` to enable all `surrealdb` features. 
 
 # Hot Reload dev
 
