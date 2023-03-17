@@ -6,9 +6,9 @@ import { taskFmc } from '../model/index.js';
 const HTML = html`
 <header>
 <h1></h1>
-<d-input class="search-task" placeholder="Search your task"></d-input>
-</header>
 <d-input class="new-task" placeholder="Enter new task (press enter)"></d-input>
+</header>
+<d-input class="search-task" placeholder="Search your task"></d-input>
 <section></section>
 `;
 
@@ -23,6 +23,7 @@ export class ProjectView extends BaseHTMLElement { // extends HTMLElement
 	#titleEl!: HTMLElement
 	#contentEl!: HTMLElement
 	#newTaskDInputEl!: DInputElement
+	#searchTaskDInputEl!: DInputElement
 	// #endregion --- Key Els
 
 	// #region    --- UI Events
@@ -61,7 +62,8 @@ export class ProjectView extends BaseHTMLElement { // extends HTMLElement
 	init() {
 		const content = document.importNode(HTML, true);
 
-		[this.#titleEl, this.#contentEl, this.#newTaskDInputEl] = getFirst(content, "h1", "section", "d-input");
+		[this.#titleEl, this.#contentEl, this.#newTaskDInputEl, this.#searchTaskDInputEl] =
+			getFirst(content, "h1", "section", "d-input.new-task", "d-input.search-task") as [HTMLHeadingElement, HTMLElement, DInputElement, DInputElement];
 
 		this.replaceChildren(content);
 
