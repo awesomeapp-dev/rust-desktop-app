@@ -7,10 +7,11 @@ use crate::prelude::*;
 use crate::utils::{map, XTake};
 use modql::{ListOptions, OrGroups};
 use surrealdb::sql::{thing, Array, Datetime, Object, Value};
-use surrealdb::{Datastore, Session};
 
 use super::surreal_modql::build_select_query;
 use super::{Creatable, Patchable};
+use surrealdb::dbs::Session;
+use surrealdb::kvs::Datastore;
 
 // --- Store definition and implementation
 //     Note: This is used to normalize the store access for what is

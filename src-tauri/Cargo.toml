@@ -22,7 +22,7 @@ tauri = { version = "1", features = [] }
 
 # For dev and to easy first time build experience, just have memory surrealdb for  now.
 # Remove `default-feature=false, features = ...` to enable persistent storage.
-surrealdb = {version = "1.0.0-beta.8", default-features=false, features = ['parallel', 'kv-mem'] }
+surrealdb = {version = "1.0.0-beta.9", default-features=false, features = ['kv-mem'] }
 
 parking_lot = "0.12"
 modql = "0.0.5"

@@ -31,7 +31,7 @@ pub enum Error {
 	ModqlOperatorNotSupported(String),
 
 	#[error(transparent)]
-	Surreal(#[from] surrealdb::Error),
+	Surreal(#[from] surrealdb::err::Error),
 
 	#[error(transparent)]
 	IO(#[from] std::io::Error),
