@@ -9,7 +9,7 @@
 //! - `x_take_val` that returns `Result<T>` (i.e. fails if no value for key)
 //!
 
-use crate::prelude::*;
+use crate::{Error, Result};
 
 /// Remove and return the Option<value> for a given type and key.
 /// If no value for this key, return Result<None>.

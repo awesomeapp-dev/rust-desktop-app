@@ -3,15 +3,15 @@
 //! This module is to narrow and normalize the surrealdb API surface
 //! to the rest of the application code (.e.g, Backend Model Controllers)
 
+use crate::model::store::surreal_modql::build_select_query;
+use crate::model::store::{Creatable, Patchable};
 use crate::prelude::*;
 use crate::utils::{map, XTake};
+use crate::{Error, Result};
 use modql::filter::{FilterGroups, ListOptions};
-use surrealdb::sql::{thing, Array, Datetime, Object, Value};
-
-use super::surreal_modql::build_select_query;
-use super::{Creatable, Patchable};
 use surrealdb::dbs::Session;
 use surrealdb::kvs::Datastore;
+use surrealdb::sql::{thing, Array, Datetime, Object, Value};
 
 // --- Store definition and implementation
 //     Note: This is used to normalize the store access for what is

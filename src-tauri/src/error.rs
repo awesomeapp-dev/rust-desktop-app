@@ -7,32 +7,58 @@
 //!     - By best practices, `anyhow` is not used in application code, but can be used in unit or integration test (will be in dev_dependencies when used)
 //!
 
-#[derive(thiserror::Error, Debug)]
+pub type Result<T> = core::result::Result<T, Error>;
+
+#[derive(Debug)]
 pub enum Error {
-	#[error("Fail to get Ctx")]
 	CtxFail,
 
-	#[error("Value not of type '{0}'")]
 	XValueNotOfType(&'static str),
 
-	#[error("Property '{0}' not found")]
 	XPropertyNotFound(String),
 
-	#[error("Fail to create. Cause: {0}")]
 	StoreFailToCreate(String),
 
-	#[error(transparent)]
-	Modql(#[from] modql::Error),
+	Modql(modql::Error),
 
-	#[error(transparent)]
-	JsonSerde(#[from] serde_json::Error),
+	JsonSerde(serde_json::Error),
 
-	#[error("Modql OpVal not supported by Store: {0}'")]
 	ModqlOperatorNotSupported(String),
 
-	#[error(transparent)]
-	Surreal(#[from] surrealdb::err::Error),
+	Surreal(surrealdb::err::Error),
 
-	#[error(transparent)]
-	IO(#[from] std::io::Error),
+	IO(std::io::Error),
 }
+
+// region:    --- Froms
+impl From<modql::Error> for Error {
+	fn from(val: modql::Error) -> Self {
+		Error::Modql(val)
+	}
+}
+impl From<serde_json::Error> for Error {
+	fn from(val: serde_json::Error) -> Self {
+		Error::JsonSerde(val)
+	}
+}
+impl From<surrealdb::err::Error> for Error {
+	fn from(val: surrealdb::err::Error) -> Self {
+		Error::Surreal(val)
+	}
+}
+impl From<std::io::Error> for Error {
+	fn from(val: std::io::Error) -> Self {
+		Error::IO(val)
+	}
+}
+// endregion: --- Froms
+
+// region:    --- Error Boiler
+impl std::fmt::Display for Error {
+	fn fmt(&self, fmt: &mut std::fmt::Formatter) -> core::result::Result<(), std::fmt::Error> {
+		write!(fmt, "{self:?}")
+	}
+}
+
+impl std::error::Error for Error {}
+// endregion: --- Error Boiler

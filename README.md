@@ -4,6 +4,8 @@ Base desktop application code with Tauri, Native Web Components, and SurrealDB (
 
 **See [awesomeapp.org](https://awesomeapp.org) for more info**
 
+**[Changelog](https://awesomeapp.org/changelog)**
+
 **[Discord Awesome App](https://discord.gg/XuKWrNGKpC) for any questions, issues, or anything else**
 
 > Note: To enable persitent storage, edit the `src-tauri/Cargo.toml` to enable all `surrealdb` features. 

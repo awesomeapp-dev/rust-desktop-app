@@ -5,7 +5,7 @@
 //!   2) Access to the underlying store is allowed only for the model module tree.
 
 use super::SurrealStore;
-use crate::prelude::*;
+use crate::Result;
 
 pub struct ModelStore(SurrealStore);
 

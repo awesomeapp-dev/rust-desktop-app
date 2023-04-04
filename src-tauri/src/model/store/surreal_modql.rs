@@ -10,12 +10,12 @@
 //! TODO: Implements the IncludeNodes when available in ModQL.
 //!
 
-use std::collections::BTreeMap;
-
 use crate::prelude::*;
+use crate::{Error, Result};
 use modql::filter::{
 	FilterGroups, ListOptions, OpVal, OpValBool, OpValFloat64, OpValInt64, OpValString,
 };
+use std::collections::BTreeMap;
 use surrealdb::sql::Value;
 
 pub(super) fn build_select_query(

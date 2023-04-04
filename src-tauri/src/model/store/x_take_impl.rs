@@ -6,6 +6,7 @@
 
 use crate::prelude::*;
 use crate::utils::XTakeImpl;
+use crate::Result;
 use surrealdb::sql::Object;
 
 impl XTakeImpl<String> for Object {

@@ -6,7 +6,7 @@
 //!     - The benefit of following the "JSON-RPC 2.0" scheme is that the frontend could be adapted to talk to a
 //!       web server with minimum effort, and the JSON-RPC data format for request/response is simple, clean, and well thought out.
 
-use crate::prelude::*;
+use crate::Result;
 use serde::Serialize;
 
 #[derive(Serialize)]

@@ -1,6 +1,7 @@
 //! TryFrom implementations for store related types
 
 use crate::prelude::*;
+use crate::{Error, Result};
 use surrealdb::sql::{Array, Object, Value};
 
 impl TryFrom<W<Value>> for Object {

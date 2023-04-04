@@ -6,7 +6,7 @@ use crate::ctx::Ctx;
 use crate::model::{
 	ModelMutateResultData, Project, ProjectBmc, ProjectForCreate, ProjectForUpdate,
 };
-use crate::prelude::*;
+use crate::Error;
 use serde_json::Value;
 use tauri::{command, AppHandle, Wry};
 
@@ -35,7 +35,9 @@ pub async fn update_project(
 	params: UpdateParams<ProjectForUpdate>,
 ) -> IpcResponse<ModelMutateResultData> {
 	match Ctx::from_app(app) {
-		Ok(ctx) => ProjectBmc::update(ctx, &params.id, params.data).await.into(),
+		Ok(ctx) => ProjectBmc::update(ctx, &params.id, params.data)
+			.await
+			.into(),
 		Err(_) => Err(Error::CtxFail).into(),
 	}
 }

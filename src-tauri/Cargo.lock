@@ -81,7 +81,6 @@ dependencies = [
  "surrealdb",
  "tauri",
  "tauri-build",
- "thiserror",
  "tokio",
  "ts-rs",
 ]

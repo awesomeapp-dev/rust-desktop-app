@@ -9,7 +9,7 @@
 
 use crate::event::HubEvent;
 use crate::model::ModelStore;
-use crate::prelude::*;
+use crate::Result;
 use serde::Serialize;
 use std::sync::Arc;
 use tauri::{AppHandle, Manager, Wry};

@@ -13,7 +13,6 @@ rust-version = "1.63"
 tauri-build = { version = "1", features = ["config-toml"] }
 
 [dependencies]
-thiserror = "1"
 tokio = { version = "1", features = ["full"] }
 ## -- Serde/Json
 serde_json = "1"

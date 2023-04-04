@@ -1,16 +1,18 @@
 // #![allow(unused)]
+
 #![cfg_attr(
 	all(not(debug_assertions), target_os = "windows"),
 	windows_subsystem = "windows"
 )]
 
-use crate::ipc::{
-	create_project, create_task, delete_project, delete_task, get_project, get_task, list_projects,
-	list_tasks, update_project, update_task,
-};
-use crate::prelude::*;
+// -- Re-Exports
+pub use error::{Error, Result};
+
+// -- Imports
 use model::{seed_store_for_dev, ModelStore};
 use std::sync::Arc;
+
+// -- Sub-Modules
 mod ctx;
 mod error;
 mod event;
@@ -31,17 +33,17 @@ async fn main() -> Result<()> {
 		.manage(model_manager)
 		.invoke_handler(tauri::generate_handler![
 			// Project
-			get_project,
-			create_project,
-			update_project,
-			delete_project,
-			list_projects,
+			ipc::get_project,
+			ipc::create_project,
+			ipc::update_project,
+			ipc::delete_project,
+			ipc::list_projects,
 			// Task
-			get_task,
-			create_task,
-			update_task,
-			delete_task,
-			list_tasks,
+			ipc::get_task,
+			ipc::create_task,
+			ipc::update_task,
+			ipc::delete_task,
+			ipc::list_tasks,
 		])
 		.run(tauri::generate_context!())
 		.expect("error while running tauri application");
