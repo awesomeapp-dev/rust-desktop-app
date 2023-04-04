@@ -5,7 +5,7 @@
 
 use crate::prelude::*;
 use crate::utils::{map, XTake};
-use modql::{ListOptions, OrGroups};
+use modql::filter::{FilterGroups, ListOptions};
 use surrealdb::sql::{thing, Array, Datetime, Object, Value};
 
 use super::surreal_modql::build_select_query;
@@ -116,7 +116,7 @@ impl SurrealStore {
 		Ok(tid.to_string())
 	}
 
-	pub(in crate::model) async fn exec_select<O: Into<OrGroups>>(
+	pub(in crate::model) async fn exec_select<O: Into<FilterGroups>>(
 		&self,
 		tb: &str,
 		filter_groups: Option<O>,
@@ -140,7 +140,7 @@ impl SurrealStore {
 // region:    --- Tests
 #[cfg(test)]
 mod tests {
-	use modql::*;
+	use modql::filter::*;
 	use std::sync::Arc;
 	use tokio::sync::OnceCell;
 
@@ -169,24 +169,24 @@ mod tests {
 
 	#[derive(Debug, FilterNodes)]
 	struct ProjectFilter {
-		pub id: Option<IntOpVals>,
-		pub name: Option<StringOpVals>,
-		pub some_other: Option<StringOpVals>,
+		pub id: Option<OpValsInt64>,
+		pub name: Option<OpValsString>,
+		pub some_other: Option<OpValsString>,
 	}
 
 	#[derive(Debug, FilterNodes)]
 	struct TaskFilter {
-		pub project_id: Option<StringOpVals>,
-		pub title: Option<StringOpVals>,
-		pub done: Option<BoolOpVals>,
-		pub desc: Option<StringOpVals>,
+		pub project_id: Option<OpValsString>,
+		pub title: Option<OpValsString>,
+		pub done: Option<OpValsBool>,
+		pub desc: Option<OpValsString>,
 	}
 
 	#[test]
 	fn test_surreal_build_select_query() -> anyhow::Result<()> {
 		let filter = ProjectFilter {
-			id: Some(IntOpVal::Lt(1).into()),
-			name: Some(StringOpVal::Eq("Hello".to_string()).into()),
+			id: Some(OpValInt64::Lt(1).into()),
+			name: Some(OpValString::Eq("Hello".to_string()).into()),
 			some_other: None,
 		};
 		let filter_nodes: Vec<FilterNode> = filter.try_into()?;
@@ -212,7 +212,7 @@ mod tests {
 		let model_manager = get_shared_test_store().await;
 		let filter = ProjectFilter {
 			id: None,
-			name: Some(StringOpVal::Eq("Project A".to_string()).into()),
+			name: Some(OpValString::Eq("Project A".to_string()).into()),
 			some_other: None,
 		};
 
@@ -236,7 +236,7 @@ mod tests {
 		let model_manager = get_shared_test_store().await;
 
 		// get the "Project A" project_id
-		let project_filter_node = FilterNode::new("name", "Project A");
+		let project_filter_node = FilterNode::from(("name", "Project A"));
 		let mut rs = model_manager
 			.store()
 			.exec_select("project", Some(project_filter_node), ListOptions::default())
@@ -244,9 +244,9 @@ mod tests {
 		let project_id = rs.pop().unwrap().x_take_val::<String>("id")?;
 
 		let filter = TaskFilter {
-			project_id: Some(StringOpVal::from(project_id).into()),
+			project_id: Some(OpValString::from(project_id).into()),
 			title: None,
-			done: Some(BoolOpVal::Eq(true).into()),
+			done: Some(OpValBool::Eq(true).into()),
 			desc: None,
 		};
 
@@ -270,7 +270,7 @@ mod tests {
 	async fn test_surreal_select_contains() -> anyhow::Result<()> {
 		// --- FIXTURE
 		let model_manager = get_shared_test_store().await;
-		let filter_node = FilterNode::new("title", StringOpVal::Contains("200".into()));
+		let filter_node = FilterNode::from(("title", OpValString::Contains("200".into())));
 
 		// --- EXEC
 		let mut rs = model_manager
@@ -302,7 +302,7 @@ mod tests {
 	async fn test_surreal_select_starts_with() -> anyhow::Result<()> {
 		// --- FIXTURE
 		let model_manager = get_shared_test_store().await;
-		let filter_node = FilterNode::new("title", StringOpVal::StartsWith("Task A.1".into()));
+		let filter_node = FilterNode::from(("title", OpValString::StartsWith("Task A.1".into())));
 
 		// --- EXEC
 		let rs = model_manager
@@ -320,7 +320,7 @@ mod tests {
 	async fn test_surreal_select_ends_with() -> anyhow::Result<()> {
 		// --- FIXTURE
 		let model_manager = get_shared_test_store().await;
-		let filter_node = FilterNode::new("title", StringOpVal::EndsWith("11".into()));
+		let filter_node = FilterNode::from(("title", OpValString::EndsWith("11".into())));
 
 		// --- EXEC
 		let rs = model_manager
@@ -338,10 +338,14 @@ mod tests {
 	async fn test_surreal_select_or() -> anyhow::Result<()> {
 		// --- FIXTURE
 		let model_manager = get_shared_test_store().await;
-		let filter_nodes_1: Vec<FilterNode> =
-			vec![FilterNode::new("title", StringOpVal::EndsWith("11".into()))];
-		let filter_nodes_2: Vec<FilterNode> =
-			vec![FilterNode::new("title", StringOpVal::EndsWith("22".into()))];
+		let filter_nodes_1: Vec<FilterNode> = vec![FilterNode::from((
+			"title",
+			OpValString::EndsWith("11".into()),
+		))];
+		let filter_nodes_2: Vec<FilterNode> = vec![FilterNode::from((
+			"title",
+			OpValString::EndsWith("22".into()),
+		))];
 
 		// --- EXEC
 		let rs = model_manager
@@ -363,8 +367,14 @@ mod tests {
 	async fn test_surreal_select_order_bys() -> anyhow::Result<()> {
 		// --- FIXTURE
 		let model_manager = get_shared_test_store().await;
-		let filter_nodes_1 = vec![FilterNode::new("title", StringOpVal::EndsWith("11".into()))];
-		let filter_nodes_2 = vec![FilterNode::new("title", StringOpVal::EndsWith("22".into()))];
+		let filter_nodes_1 = vec![FilterNode::from((
+			"title",
+			OpValString::EndsWith("11".into()),
+		))];
+		let filter_nodes_2 = vec![FilterNode::from((
+			"title",
+			OpValString::EndsWith("22".into()),
+		))];
 
 		let list_options = ListOptions {
 			order_bys: Some(vec!["done", "!title"].into()),
@@ -400,8 +410,14 @@ mod tests {
 	async fn test_surreal_select_offset_limit() -> anyhow::Result<()> {
 		// --- FIXTURE
 		let model_manager = get_shared_test_store().await;
-		let filter_nodes_1 = vec![FilterNode::new("title", StringOpVal::EndsWith("11".into()))];
-		let filter_nodes_2 = vec![FilterNode::new("title", StringOpVal::EndsWith("22".into()))];
+		let filter_nodes_1 = vec![FilterNode::from((
+			"title",
+			OpValString::EndsWith("11".into()),
+		))];
+		let filter_nodes_2 = vec![FilterNode::from((
+			"title",
+			OpValString::EndsWith("22".into()),
+		))];
 
 		let list_options = ListOptions {
 			order_bys: Some(vec!["done", "title"].into()),

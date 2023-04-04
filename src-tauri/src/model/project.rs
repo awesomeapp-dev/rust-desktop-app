@@ -6,7 +6,7 @@ use super::ModelMutateResultData;
 use crate::ctx::Ctx;
 use crate::prelude::*;
 use crate::utils::XTake;
-use modql::{FilterNodes, ListOptions, StringOpVals};
+use modql::filter::{FilterNodes, ListOptions, OpValsString};
 use serde::{Deserialize, Serialize};
 use serde_with_macros::skip_serializing_none;
 use std::collections::BTreeMap;
@@ -89,8 +89,8 @@ impl Patchable for ProjectForUpdate {}
 
 #[derive(FilterNodes, Deserialize, Debug)]
 pub struct ProjectFilter {
-	pub id: Option<StringOpVals>,
-	pub name: Option<StringOpVals>,
+	pub id: Option<OpValsString>,
+	pub name: Option<OpValsString>,
 }
 
 impl Filterable for ProjectFilter {}

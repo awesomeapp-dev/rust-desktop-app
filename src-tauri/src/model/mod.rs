@@ -62,17 +62,17 @@ impl From<String> for ModelMutateResultData {
 // region:    --- Tests
 #[cfg(test)]
 mod tests {
-	use modql::{FilterNodes, StringOpVal, StringOpVals};
+	use modql::filter::{FilterNodes, OpValString, OpValsString};
 
 	#[derive(Debug, FilterNodes)]
 	struct ProjectFilter {
-		id: Option<StringOpVals>,
+		id: Option<OpValsString>,
 	}
 
 	#[test]
 	fn test_simple() -> anyhow::Result<()> {
 		let pf = ProjectFilter {
-			id: Some(StringOpVal::Eq("hello".to_string()).into()),
+			id: Some(OpValString::Eq("hello".to_string()).into()),
 		};
 		println!("{pf:?}");
 		Ok(())

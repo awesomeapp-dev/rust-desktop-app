@@ -7,7 +7,7 @@ use super::ModelMutateResultData;
 use crate::ctx::Ctx;
 use crate::prelude::*;
 use crate::utils::{map, XTake};
-use modql::{FilterNodes, ListOptions, StringOpVals};
+use modql::filter::{FilterNodes, ListOptions, OpValsString};
 use serde::{Deserialize, Serialize};
 use serde_with_macros::skip_serializing_none;
 use std::collections::BTreeMap;
@@ -116,8 +116,8 @@ impl Patchable for TaskForUpdate {}
 
 #[derive(FilterNodes, Deserialize, Debug)]
 pub struct TaskFilter {
-	pub project_id: Option<StringOpVals>,
-	pub title: Option<StringOpVals>,
+	pub project_id: Option<OpValsString>,
+	pub title: Option<OpValsString>,
 }
 
 impl Filterable for TaskFilter {}

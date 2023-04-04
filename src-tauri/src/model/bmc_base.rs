@@ -5,7 +5,7 @@ use super::store::{Creatable, Filterable, Patchable};
 use super::{fire_model_event, ModelMutateResultData};
 use crate::ctx::Ctx;
 use crate::prelude::*;
-use modql::ListOptions;
+use modql::filter::ListOptions;
 use std::sync::Arc;
 use surrealdb::sql::Object;
 

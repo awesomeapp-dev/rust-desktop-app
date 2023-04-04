@@ -1,4 +1,4 @@
-use modql::IntoFilterNodes;
+use modql::filter::IntoFilterNodes;
 use surrealdb::sql::Value;
 
 mod surreal_modql;

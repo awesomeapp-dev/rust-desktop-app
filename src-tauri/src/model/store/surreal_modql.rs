@@ -2,7 +2,7 @@
 //!
 //! For now the following is implemented:
 //!
-//! - FilterNodes with OrGroups
+//! - FilterNodes with FilterGroups
 //! - ListOptions.offset
 //! - ListOptions.limit
 //! - ListOptions.order_by
@@ -13,12 +13,14 @@
 use std::collections::BTreeMap;
 
 use crate::prelude::*;
-use modql::{BoolOpVal, FloatOpVal, IntOpVal, ListOptions, OpVal, OrGroups, StringOpVal};
+use modql::filter::{
+	FilterGroups, ListOptions, OpVal, OpValBool, OpValFloat64, OpValInt64, OpValString,
+};
 use surrealdb::sql::Value;
 
 pub(super) fn build_select_query(
 	tb: &str,
-	or_groups: Option<OrGroups>,
+	or_groups: Option<FilterGroups>,
 	list_options: ListOptions,
 ) -> Result<(String, BTreeMap<String, Value>)> {
 	let mut sql = String::from("SELECT * FROM type::table($tb)");
@@ -31,22 +33,22 @@ pub(super) fn build_select_query(
 		sql.push_str(" WHERE");
 
 		// For each OR group
-		for (group_idx, filter_nodes) in or_groups.groups().into_iter().enumerate() {
+		for (group_idx, filter_nodes) in or_groups.groups().iter().enumerate() {
 			if group_idx > 0 {
 				sql.push_str(" OR");
 			}
 
 			// The AND filters
 			sql.push_str(" (");
-			for (node_idx, filter_node) in filter_nodes.into_iter().enumerate() {
-				let key = filter_node.name;
-				for opval in filter_node.opvals {
+			for (node_idx, filter_node) in filter_nodes.nodes().iter().enumerate() {
+				let key = &filter_node.name;
+				for opval in &filter_node.opvals {
 					let var = f!("w{idx}");
 					if node_idx > 0 {
 						sql.push_str(" AND");
 					}
 					// fix me, needs to take it from op_val
-					let (sql_el, val) = sqlize(opval, &key, &var)?;
+					let (sql_el, val) = sqlize(opval.clone(), key, &var)?;
 					sql.push_str(&f!(" {sql_el}"));
 					vars.insert(var, val);
 
@@ -88,44 +90,44 @@ pub(super) fn build_select_query(
 fn sqlize(opval: OpVal, prop_name: &str, var_idx: &str) -> Result<(String, Value)> {
 	Ok(match opval {
 		// Eq
-		OpVal::String(StringOpVal::Eq(v)) => (f!("{prop_name} = ${var_idx}"), v.into()),
-		OpVal::Int(IntOpVal::Eq(v)) => (f!("{prop_name} = ${var_idx}"), v.into()),
-		OpVal::Float(FloatOpVal::Eq(v)) => (f!("{prop_name} = ${var_idx}"), v.into()),
-		OpVal::Bool(BoolOpVal::Eq(v)) => (f!("{prop_name} = ${var_idx}"), v.into()),
+		OpVal::String(OpValString::Eq(v)) => (f!("{prop_name} = ${var_idx}"), v.into()),
+		OpVal::Int64(OpValInt64::Eq(v)) => (f!("{prop_name} = ${var_idx}"), v.into()),
+		OpVal::Float64(OpValFloat64::Eq(v)) => (f!("{prop_name} = ${var_idx}"), v.into()),
+		OpVal::Bool(OpValBool::Eq(v)) => (f!("{prop_name} = ${var_idx}"), v.into()),
 		// Not
-		OpVal::String(StringOpVal::Not(v)) => (f!("{prop_name} != ${var_idx}"), v.into()),
-		OpVal::Int(IntOpVal::Not(v)) => (f!("{prop_name} != ${var_idx}"), v.into()),
-		OpVal::Float(FloatOpVal::Not(v)) => (f!("{prop_name} != ${var_idx}"), v.into()),
-		OpVal::Bool(BoolOpVal::Not(v)) => (f!("{prop_name} != ${var_idx}"), v.into()),
+		OpVal::String(OpValString::Not(v)) => (f!("{prop_name} != ${var_idx}"), v.into()),
+		OpVal::Int64(OpValInt64::Not(v)) => (f!("{prop_name} != ${var_idx}"), v.into()),
+		OpVal::Float64(OpValFloat64::Not(v)) => (f!("{prop_name} != ${var_idx}"), v.into()),
+		OpVal::Bool(OpValBool::Not(v)) => (f!("{prop_name} != ${var_idx}"), v.into()),
 		// <
-		OpVal::String(StringOpVal::Lt(v)) => (f!("{prop_name} < ${var_idx}"), v.into()),
-		OpVal::Int(IntOpVal::Lt(v)) => (f!("{prop_name} < ${var_idx}"), v.into()),
-		OpVal::Float(FloatOpVal::Lt(v)) => (f!("{prop_name} < ${var_idx}"), v.into()),
+		OpVal::String(OpValString::Lt(v)) => (f!("{prop_name} < ${var_idx}"), v.into()),
+		OpVal::Int64(OpValInt64::Lt(v)) => (f!("{prop_name} < ${var_idx}"), v.into()),
+		OpVal::Float64(OpValFloat64::Lt(v)) => (f!("{prop_name} < ${var_idx}"), v.into()),
 		// <=
-		OpVal::String(StringOpVal::Lte(v)) => (f!("{prop_name} < ${var_idx}"), v.into()),
-		OpVal::Int(IntOpVal::Lte(v)) => (f!("{prop_name} < ${var_idx}"), v.into()),
-		OpVal::Float(FloatOpVal::Lte(v)) => (f!("{prop_name} < ${var_idx}"), v.into()),
+		OpVal::String(OpValString::Lte(v)) => (f!("{prop_name} < ${var_idx}"), v.into()),
+		OpVal::Int64(OpValInt64::Lte(v)) => (f!("{prop_name} < ${var_idx}"), v.into()),
+		OpVal::Float64(OpValFloat64::Lte(v)) => (f!("{prop_name} < ${var_idx}"), v.into()),
 		// >
-		OpVal::String(StringOpVal::Gt(v)) => (f!("{prop_name} > ${var_idx}"), v.into()),
-		OpVal::Int(IntOpVal::Gt(v)) => (f!("{prop_name} > ${var_idx}"), v.into()),
-		OpVal::Float(FloatOpVal::Gt(v)) => (f!("{prop_name} > ${var_idx}"), v.into()),
+		OpVal::String(OpValString::Gt(v)) => (f!("{prop_name} > ${var_idx}"), v.into()),
+		OpVal::Int64(OpValInt64::Gt(v)) => (f!("{prop_name} > ${var_idx}"), v.into()),
+		OpVal::Float64(OpValFloat64::Gt(v)) => (f!("{prop_name} > ${var_idx}"), v.into()),
 		// >=
-		OpVal::String(StringOpVal::Gte(v)) => (f!("{prop_name} > ${var_idx}"), v.into()),
-		OpVal::Int(IntOpVal::Gte(v)) => (f!("{prop_name} > ${var_idx}"), v.into()),
-		OpVal::Float(FloatOpVal::Gte(v)) => (f!("{prop_name} > ${var_idx}"), v.into()),
+		OpVal::String(OpValString::Gte(v)) => (f!("{prop_name} > ${var_idx}"), v.into()),
+		OpVal::Int64(OpValInt64::Gte(v)) => (f!("{prop_name} > ${var_idx}"), v.into()),
+		OpVal::Float64(OpValFloat64::Gte(v)) => (f!("{prop_name} > ${var_idx}"), v.into()),
 
 		// contains
-		OpVal::String(StringOpVal::Contains(v)) => {
+		OpVal::String(OpValString::Contains(v)) => {
 			(f!("{prop_name} CONTAINS ${var_idx}"), v.into())
 		}
 
 		// startsWith
-		OpVal::String(StringOpVal::StartsWith(v)) => {
+		OpVal::String(OpValString::StartsWith(v)) => {
 			(f!("string::startsWith({prop_name}, ${var_idx}) "), v.into())
 		}
 
 		// endsWith
-		OpVal::String(StringOpVal::EndsWith(v)) => {
+		OpVal::String(OpValString::EndsWith(v)) => {
 			(f!("string::endsWith({prop_name}, ${var_idx}) "), v.into())
 		}
 

@@ -15,17 +15,18 @@ tauri-build = { version = "1", features = ["config-toml"] }
 [dependencies]
 thiserror = "1"
 tokio = { version = "1", features = ["full"] }
+## -- Serde/Json
 serde_json = "1"
 serde = { version = "1", features = ["derive"] }
 serde_with_macros = "2"
+## -- Tauri & SurrealDB
 tauri = { version = "1", features = [] }
-
 # For dev and to easy first time build experience, just have memory surrealdb for  now.
 # Remove `default-feature=false, features = ...` to enable persistent storage.
 surrealdb = {version = "1.0.0-beta.9", default-features=false, features = ['kv-mem'] }
-
+## -- Others
 parking_lot = "0.12"
-modql = "0.0.5"
+modql = "0.1.0"
 # NOTE: , features = ["format"] would be nice, but it is very heavy, and sometime have compiles issues with swc_ components
 ts-rs = { version = "6" }
 
