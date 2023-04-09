@@ -55,8 +55,9 @@ IMPORTANT: Make sure to have **node.js latest of 16** or above.
   - `cd src-tauri`
   - `cargo build` 
   - This might be an important first step when using full surrealdb (i.e., with default features and not only kv-mem) 
+  - also try `npm run tauri dev` as well
 
-## Requirements on fedora 36:
+## Requirements on Fedora 36
 
 On Fedora, and probably linux, the following needs to be present on the system. 
 
@@ -67,6 +68,26 @@ dnf install libsoup-devel
 dnf install webkit2gtk3-devel.x86_64
 ```
 
+
+## Requirements on Ubuntu 20
+
+```sh
+npm i
+
+# install latest tauri in case there is none
+npm i -g @tauri-apps/cli @tauri-apps/api
+
+sudo aptitude install -y \
+  build-essential \
+  libpango1.0-dev \
+  libsoup2.4-dev \
+  libjavascriptcoregtk-4.0-dev \
+  libgdk-pixbuf2.0-dev \
+  libgtk-3-dev \
+  libwebkit2gtk-4.0-dev
+
+npm run tauri dev
+```
 
 <br /><br />
 
