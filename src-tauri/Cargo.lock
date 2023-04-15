@@ -2040,9 +2040,9 @@ dependencies = [
 
 [[package]]
 name = "modql"
-version = "0.1.0"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "52394ac02dd74bcfb73e0cda6d537035cc6b7dc67b6b273cf19526e402cbd6fa"
+checksum = "9b058876135070ec17e24f598abb48502d68563728b8c0e1a4d33a84200b1257"
 dependencies = [
  "modql-macros",
  "serde",

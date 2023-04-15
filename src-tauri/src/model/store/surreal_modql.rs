@@ -12,9 +12,8 @@
 
 use crate::prelude::*;
 use crate::{Error, Result};
-use modql::filter::{
-	FilterGroups, ListOptions, OpVal, OpValBool, OpValFloat64, OpValInt64, OpValString,
-};
+use modql::filter::{FilterGroups, OpVal, OpValBool, OpValFloat64, OpValInt64, OpValString};
+use modql::ListOptions;
 use std::collections::BTreeMap;
 use surrealdb::sql::Value;
 

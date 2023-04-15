@@ -25,7 +25,7 @@ tauri = { version = "1", features = [] }
 surrealdb = {version = "1.0.0-beta.9", default-features=false, features = ['kv-mem'] }
 ## -- Others
 parking_lot = "0.12"
-modql = "0.1.0"
+modql = "0.2.0"
 # NOTE: , features = ["format"] would be nice, but it is very heavy, and sometime have compiles issues with swc_ components
 ts-rs = { version = "6" }
 

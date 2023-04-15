@@ -8,7 +8,8 @@ use crate::model::store::{Creatable, Patchable};
 use crate::prelude::*;
 use crate::utils::{map, XTake};
 use crate::{Error, Result};
-use modql::filter::{FilterGroups, ListOptions};
+use modql::filter::FilterGroups;
+use modql::ListOptions;
 use surrealdb::dbs::Session;
 use surrealdb::kvs::Datastore;
 use surrealdb::sql::{thing, Array, Datetime, Object, Value};
@@ -146,6 +147,7 @@ mod tests {
 
 	use crate::model::ModelStore;
 	use crate::utils::XTake;
+	use modql::ListOptions;
 
 	static STORE_ONCE: OnceCell<Arc<ModelStore>> = OnceCell::const_new();
 
