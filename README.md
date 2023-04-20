@@ -2,11 +2,9 @@
 
 Base desktop application code with Tauri, Native Web Components, and SurrealDB (follow the VMES app architecture)
 
-**See [awesomeapp.org](https://awesomeapp.org) for more info**
+**See [awesomeapp.dev](https://awesomeapp.dev) for more info**
 
-**[Changelog](https://awesomeapp.org/changelog)**
-
-**[Discord Awesome App](https://discord.gg/XuKWrNGKpC) for any questions, issues, or anything else**
+**[Troubleshooting](#troubleshooting)** | **[Changelog](https://awesomeapp.dev/changelog)** | **[Discord Awesome App](https://discord.gg/XuKWrNGKpC)**
 
 > Note: To enable persitent storage, edit the `src-tauri/Cargo.toml` to enable all `surrealdb` features. 
 
@@ -55,6 +53,8 @@ IMPORTANT: Make sure to have **node.js latest of 16** or above.
   - `cd src-tauri`
   - `cargo build` 
   - This might be an important first step when using full surrealdb (i.e., with default features and not only kv-mem) 
+
+- It failed to compile and came up with the error `failed to download replaced source registry crates-io`. **Deleting** the **cargo.lock** file and **package-lock.json** file fixed it.  
 
 ## Requirements on fedora 36:
 
