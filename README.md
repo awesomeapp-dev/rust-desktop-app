@@ -48,12 +48,14 @@ IMPORTANT: Make sure to have **node.js latest of 16** or above.
 # Troubleshooting
 
 - Make sure to have **node.js 18** or above.
+
 - If some cryptic errors, run the command above one by one. 
+
 - If `npm tauri dev` commands fail, try to do:
   - `cd src-tauri`
   - `cargo build` 
   - This might be an important first step when using full surrealdb (i.e., with default features and not only kv-mem) 
-
+  
 - It failed to compile and came up with the error `failed to download replaced source registry crates-io`. **Deleting** the **cargo.lock** file and **package-lock.json** file fixed it.  
 
 ## Requirements on fedora 36:
