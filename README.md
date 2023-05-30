@@ -58,6 +58,14 @@ IMPORTANT: Make sure to have **node.js latest of 16** or above.
   
 - It failed to compile and came up with the error `failed to download replaced source registry crates-io`. **Deleting** the **cargo.lock** file and **package-lock.json** file fixed it.  
 
+- Installing Tauri in case some issues: 
+```sh
+# install latest tauri in case there is none
+npm i -g @tauri-apps/cli @tauri-apps/api
+```
+
+
+
 ## Requirements on fedora 36:
 
 On Fedora, and probably linux, the following needs to be present on the system. 
@@ -68,6 +76,23 @@ dnf install webkit2gtk3-jsc-devel
 dnf install libsoup-devel
 dnf install webkit2gtk3-devel.x86_64
 ```
+
+## Requirements on Ubuntu 20
+
+```sh
+npm i
+npm i -g tauri
+sudo aptitude install -y \
+  build-essential \
+  libpango1.0-dev \
+  libsoup2.4-dev \
+  libjavascriptcoregtk-4.0-dev \
+  libgdk-pixbuf2.0-dev \
+  libgtk-3-dev \
+  libwebkit2gtk-4.0-dev
+npm run tauri dev
+```
+
 
 
 <br /><br />
