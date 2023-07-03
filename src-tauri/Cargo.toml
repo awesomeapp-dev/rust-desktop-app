@@ -17,7 +17,7 @@ tokio = { version = "1", features = ["full"] }
 ## -- Serde/Json
 serde_json = "1"
 serde = { version = "1", features = ["derive"] }
-serde_with_macros = "2"
+serde_with_macros = "3"
 ## -- Tauri & SurrealDB
 tauri = { version = "1", features = [] }
 # For dev and to easy first time build experience, just have memory surrealdb for  now.
