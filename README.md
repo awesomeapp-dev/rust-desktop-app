@@ -1,4 +1,4 @@
-# Rust Base App Template for AWESOME-APP
+# Rust Desktop App Code Template (following AwesomeApp Blueprint)
 
 Base desktop application code with Tauri, Native Web Components, and SurrealDB (follow the VMES app architecture)
 
@@ -16,10 +16,10 @@ For hot-reload UI and Tauri development, run the following in your VSCode from t
 awesome-app dev
 ```
 
+> This assumes `awesome-app` was installed locally (e.g., `cargo install awesome-app`)
+
 > **IMPORTANT** - Requires **node.js v8 and above**. 
 
-
-> This assumes `awesome-app` was installed locally (e.g., `cargo install awesome-app`)
 
 # How it works
 
@@ -93,8 +93,7 @@ sudo aptitude install -y \
 npm run tauri dev
 ```
 
-
-
 <br /><br />
 
-## Happy Coding!
+[This repo on GitHub](https://github.com/awesomeapp-dev/rust-desktop-app)
+
