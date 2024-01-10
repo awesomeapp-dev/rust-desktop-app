@@ -191,7 +191,7 @@ mod tests {
 			name: Some(OpValString::Eq("Hello".to_string()).into()),
 			some_other: None,
 		};
-		let filter_nodes: Vec<FilterNode> = filter.try_into()?;
+		let filter_nodes: Vec<FilterNode> = filter.into();
 
 		let (sql, vars) = super::build_select_query(
 			"project",
